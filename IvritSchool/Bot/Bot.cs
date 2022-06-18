@@ -11,9 +11,6 @@ namespace IvritSchool.Bot
     public static class Bot
     {
         private static TelegramBotClient client;
-        private static List<Command> CommandsList;
-
-        public static IReadOnlyList<Command> Commands { get => CommandsList.AsReadOnly(); }
 
         public static async Task<TelegramBotClient> Get()
         {
@@ -21,8 +18,8 @@ namespace IvritSchool.Bot
             {
                 return client;
             }
+
             client = new TelegramBotClient(AppSettings.Key);
-            CommandsList = new List<Command>();
 
             string url = string.Format(AppSettings.Url, "message/update");
             await client.SetWebhookAsync(url);
