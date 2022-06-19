@@ -1,4 +1,6 @@
-﻿using IvritSchool.BLL.Users;
+﻿using IvritSchool.BLL.Days;
+using IvritSchool.BLL.Tariffs;
+using IvritSchool.BLL.Users;
 using IvritSchool.Commands;
 using IvritSchool.Data;
 using IvritSchool.Finder;
@@ -17,6 +19,8 @@ namespace IvritSchool.Extensions
             services.AddCommands();
 
             services.AddScoped<IUserBLL, UserBLL>();
+            services.AddScoped<IDayBLL, DayBLL>();
+            services.AddScoped<ITariffBLL, TariffBLL>();
 
             return services;
         }

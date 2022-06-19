@@ -1,4 +1,5 @@
 ﻿using IvritSchool.Enums;
+using System.Collections.Generic;
 
 namespace IvritSchool.Entities
 {
@@ -9,5 +10,6 @@ namespace IvritSchool.Entities
         public string Text { get; set; }
         public string Path { get; set; }
         public bool VIP { get; set; }
+        public IEnumerable<Days> Days { get; set; }
     }
 }

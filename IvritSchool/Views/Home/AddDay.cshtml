@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "AddDay";
+}
+
+<h2>Добавление дня</h2>
+<br />
+
+@using (Html.AjaxBeginForm("AddDay", new AjaxOptions { UpdateTargetId = "Result", HttpMethod = "POST" }))
+{
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                <label for="formGroupExampleInput">Номер дня</label>
+                <input type="text" class="form-control" value="" name="DayNumber" placeholder="">
+            </div>
+        </div>
+    </div>
+    <input type="submit" class="form-control" value="Добавить" />
+}
+<div>
+    <h3 id="Result"></h3>
+</div>

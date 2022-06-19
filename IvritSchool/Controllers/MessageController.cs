@@ -37,7 +37,7 @@ namespace IvritSchool.Controllers
 
             try
             {
-                foreach (var el in Bot.Bot.Commands)
+                foreach (var el in _commands)
                 {
                     if (el.Contains(Text))
                     {

@@ -19,6 +19,36 @@ namespace IvritSchool.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("DaysMessage", b =>
+                {
+                    b.Property<int>("DaysID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MessagesID")
+                        .HasColumnType("int");
+
+                    b.HasKey("DaysID", "MessagesID");
+
+                    b.HasIndex("MessagesID");
+
+                    b.ToTable("DaysMessage");
+                });
+
+            modelBuilder.Entity("DaysTariff", b =>
+                {
+                    b.Property<int>("DaysID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TariffsID")
+                        .HasColumnType("int");
+
+                    b.HasKey("DaysID", "TariffsID");
+
+                    b.HasIndex("TariffsID");
+
+                    b.ToTable("DaysTariff");
+                });
+
             modelBuilder.Entity("IvritSchool.Entities.BotUser", b =>
                 {
                     b.Property<int>("ID")
@@ -68,9 +98,6 @@ namespace IvritSchool.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("DaysID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Path")
                         .HasColumnType("nvarchar(max)");
 
@@ -80,11 +107,30 @@ namespace IvritSchool.Data.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
+                    b.Property<bool>("VIP")
+                        .HasColumnType("bit");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("DaysID");
-
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("IvritSchool.Entities.Tariff", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("VIP")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Tariff");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -287,11 +333,34 @@ namespace IvritSchool.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("IvritSchool.Entities.Message", b =>
+            modelBuilder.Entity("DaysMessage", b =>
                 {
                     b.HasOne("IvritSchool.Entities.Days", null)
-                        .WithMany("Messages")
-                        .HasForeignKey("DaysID");
+                        .WithMany()
+                        .HasForeignKey("DaysID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IvritSchool.Entities.Message", null)
+                        .WithMany()
+                        .HasForeignKey("MessagesID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DaysTariff", b =>
+                {
+                    b.HasOne("IvritSchool.Entities.Days", null)
+                        .WithMany()
+                        .HasForeignKey("DaysID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IvritSchool.Entities.Tariff", null)
+                        .WithMany()
+                        .HasForeignKey("TariffsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -343,11 +412,6 @@ namespace IvritSchool.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("IvritSchool.Entities.Days", b =>
-                {
-                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }
