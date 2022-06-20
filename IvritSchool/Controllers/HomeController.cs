@@ -53,10 +53,10 @@ namespace IvritSchool.Controllers
             return BuildResultString((true, "Пользователь был изменен"));
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpGet]
+        public ActionResult AddDay()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
     }
 }
