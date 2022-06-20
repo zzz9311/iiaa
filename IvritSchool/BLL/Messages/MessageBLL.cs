@@ -14,12 +14,18 @@ namespace IvritSchool.BLL.Messages
         private readonly IFinder<Entities.Message> _finder;
         private readonly ISaveChangesCommand _saveChangesCommand;
         public MessageBLL(IRepository<Entities.Message> repository,
-                       IFinder<Entities.Message> finder,
-                       ISaveChangesCommand saveChangesCommand)
+                          IFinder<Entities.Message> finder,
+                          ISaveChangesCommand saveChangesCommand)
         {
             _repository = repository;
             _finder = finder;
             _saveChangesCommand = saveChangesCommand;
+        }
+
+        public void Insert(Entities.Message message)
+        {
+            _repository.Insert(message);
+            _saveChangesCommand.SaveChanges();
         }
 
     }

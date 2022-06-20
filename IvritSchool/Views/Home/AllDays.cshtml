@@ -2,7 +2,9 @@
 @{
     ViewBag.Title = "AdminUserPanel";
 }
-
+<a href="@Url.Action("AddDay", "Home")">Добавить день</a>
+<br />
+<br/>
 <h2>Все дни учебного плана(@Model.Count())</h2>
 
 <table class="table table-bordered">
@@ -20,7 +22,7 @@
                 <tr>
                     <th scope="row">@el.ID</th>
                     <td>@el.DayNumber</td>
-                    <td><a href="@Url.Action("EditDay", "home", new { Id = @el.ID })">Редактировать</a></td>
+                    <td><a href="@Url.Action("EditDay", "home", new { dayID = @el.ID })">Редактировать</a></td>
                 </tr>            
         }
     </tbody>

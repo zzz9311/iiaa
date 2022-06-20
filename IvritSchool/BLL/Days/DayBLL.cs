@@ -73,5 +73,10 @@ namespace IvritSchool.BLL.Days
 
             return dayNumbers.Distinct().ToList();
         }
+
+        public Entities.Days FindByID(int dayID)
+        {
+            return _finder.Find(dayID);
+        }
     }
 }

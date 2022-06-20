@@ -10,6 +10,6 @@ namespace IvritSchool.Entities
         public string Text { get; set; }
         public string Path { get; set; }
         public bool VIP { get; set; }
-        public IEnumerable<Days> Days { get; set; }
+        public Days Day { get; set; }
     }
 }

@@ -1,0 +1,39 @@
+﻿@model IvritSchool.Entities.Message[]
+@{
+    ViewBag.Title = "AdminUserPanel";
+
+    string GetName(int messageType)
+    {
+        switch(messageType)
+        {
+            case 1: return "Текcтовое сообщение";
+        }
+        return "Неопознаное сообщение";
+    }
+    }
+
+<h2>Все дни учебного плана(@Model.Count())</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">VIP</th>
+            <th scope="col">Тип сообщения</th>
+            <th scope="col">Редактировать</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var el in Model)
+        {
+        <tr>
+            <th scope="row">@el.ID</th>
+            <td>@(el.VIP == true ? "ДА":"НЕТ")</td>
+            <td>@GetName((int)el.Type)</td>
+            <td><a href="@Url.Action("EditMessage", "home", new { messageID = @el.ID })">Редактировать</a></td>
+        </tr>
+
+        }
+    </tbody>
+</table>
