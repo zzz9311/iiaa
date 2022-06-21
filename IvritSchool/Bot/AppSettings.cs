@@ -5,7 +5,7 @@ namespace IvritSchool.Bot
 {
     public class AppSettings
     {
-        private static string baseUrl = "https://baseUrl.ru/";
+        public static string baseUrl = "https://baseUrl.ru/";
         public static string Url { get; set; } = baseUrl+"{0}";
 
         public static string Name { get; set; } = "";
