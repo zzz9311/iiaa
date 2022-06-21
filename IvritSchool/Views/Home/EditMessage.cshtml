@@ -4,7 +4,7 @@
     ViewBag.Title = "EditUser";
 }
 
-<h2>Редактирования сообщения</h2>
+<h2>Редактирование сообщения</h2>
 
 @using (Html.AjaxBeginForm("EditMessage", new AjaxOptions { UpdateTargetId = "Result", HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
 {
