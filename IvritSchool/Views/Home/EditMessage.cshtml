@@ -6,22 +6,34 @@
 
 <h2>Редактирования сообщения</h2>
 
-@using (Html.AjaxBeginForm("EditMessage", new AjaxOptions { UpdateTargetId = "Result", HttpMethod = "POST" }))
+@using (Html.AjaxBeginForm("EditMessage", new AjaxOptions { UpdateTargetId = "Result", HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
 {
-    @*<div class="form-horizontal">
+    <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-10">
-                <label for="formGroupExampleInput">Тип сообщения</label>
-                <select name="Type" class="form-control" asp-items="@ViewBag.MessageTypes"></select>
+                <input type="hidden" asp-for="@Model.ID" />
+                <label for="formGroupExampleInput">Текст сообщения</label>
+                <input type="text" class="form-control" asp-for="@Model.Text" placeholder="">
             </div>
         </div>
-    </div>*@
+    </div>
 
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-10">
-                <label for="formGroupExampleInput">Текст сообщения</label>
-                <input type="text" class="form-control" value="@Model.Text" name="Text" placeholder="">
+                <label for="formGroupExampleInput">Текущий файл</label>
+                <a href="@Model.Path">Файл</a><br />
+                <label for="formGroupExampleInput">Выберите файл для загрузки</label>
+                <input type="file" name="uploadedFile" /><br><br />
+            </div>
+        </div>
+    </div>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                <label for="formGroupExampleInput">VIP</label>
+                <input type="checkbox" asp-for="@Model.VIP" class="form-control">
             </div>
         </div>
     </div>

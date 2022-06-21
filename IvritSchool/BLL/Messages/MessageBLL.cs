@@ -28,5 +28,14 @@ namespace IvritSchool.BLL.Messages
             _saveChangesCommand.SaveChanges();
         }
 
+        public void Update(Entities.Message message)
+        {
+            var newMessage = _finder.Find(message.ID);
+            newMessage.Text = message.Text;
+            newMessage.VIP = message.VIP;
+            newMessage.Path = message.Path;
+            _saveChangesCommand.SaveChanges();
+        }
+
     }
 }

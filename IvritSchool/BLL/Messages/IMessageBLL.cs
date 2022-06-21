@@ -8,5 +8,6 @@ namespace IvritSchool.BLL.Messages
     public interface IMessageBLL
     {
         public void Insert(Entities.Message message);
+        public void Update(Entities.Message message);
     }
 }

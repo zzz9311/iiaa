@@ -1,4 +1,4 @@
-﻿@model int
+﻿@model Message
 @{
     ViewBag.Title = "AddDay";
 }
@@ -6,14 +6,14 @@
 <h2>Добавление дня</h2>
 <br />
 
-@using (Html.AjaxBeginForm("AddMessageToDay", new AjaxOptions { UpdateTargetId = "Result", HttpMethod = "POST" }))
+@using (Html.AjaxBeginForm("AddMessageToDay", new AjaxOptions { UpdateTargetId = "Result", HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
 {
-    <input type="hidden" name="dayID" value="@Model" />
+    <input type="hidden" name="dayID" value="@ViewBag.Day" />
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-10">
                 <label for="formGroupExampleInput">Тип сообщения</label>
-                <select name="Type" class="form-control" asp-items="@ViewBag.MessageTypes"></select>
+                <select name="Type" class="form-control" asp-for="Type" asp-items="@ViewBag.MessageTypes"></select>
             </div>
         </div>
     </div>
@@ -22,7 +22,25 @@
         <div class="form-group">
             <div class="col-md-10">
                 <label for="formGroupExampleInput">Текст сообщения</label>
-                <input type="text" class="form-control" value="" name="Text" placeholder="">
+                <input type="text" asp-for="Text" class="form-control" value="" name="Text" placeholder="">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                <label for="formGroupExampleInput">Выберите файл для загрузки</label>
+                <input type="file" name="uploadedFile" /><br><br />
+            </div>
+        </div>
+    </div>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                <label for="formGroupExampleInput">VIP</label>
+                <input type="checkbox" asp-for="VIP" class="form-control">
             </div>
         </div>
     </div>

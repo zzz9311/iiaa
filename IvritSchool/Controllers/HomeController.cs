@@ -6,6 +6,8 @@ using IvritSchool.BLL.Users;
 using IvritSchool.Entities;
 using IvritSchool.Models;
 using IvritSchool.Repository;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR.Protocol;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
@@ -29,6 +32,7 @@ namespace IvritSchool.Controllers
         private readonly IDayBLL _dayBLL;
         private readonly ITariffBLL _tariffBLL;
         private readonly IMessageBLL _messageBLL;
+        private readonly IWebHostEnvironment _appEnvironment;
 
         public HomeController(IRepository<BotUser> userRepository,
                               IUserBLL userBLL,
@@ -37,7 +41,8 @@ namespace IvritSchool.Controllers
                               IRepository<Tariff> tariffRepository,
                               ITariffBLL tariffBLL,
                               IMessageBLL messageBLL,
-                              IRepository<Entities.Message> messageRepository)
+                              IRepository<Entities.Message> messageRepository,
+                              IWebHostEnvironment appEnvironment)
         {
             _userRepository = userRepository;
             _userBLL = userBLL;
@@ -47,6 +52,7 @@ namespace IvritSchool.Controllers
             _tariffBLL = tariffBLL;
             _messageBLL = messageBLL;
             _messageRepository = messageRepository;
+            _appEnvironment = appEnvironment;
         }
         private string BuildResultString((bool, string) tuple)
         {
@@ -110,7 +116,7 @@ namespace IvritSchool.Controllers
         {
             var day = _dayBLL.FindByID(dayID);
 
-            if(day == null)
+            if (day == null)
             {
                 return NotFound();
             }
@@ -167,17 +173,23 @@ namespace IvritSchool.Controllers
 
             ViewBag.MessageTypes = messageTypes;
 
-            return View(dayID);
+            ViewBag.Day = dayID;
+            return View();
         }
 
         [HttpPost]
-        public string AddMessageToDay(Entities.Message message, int dayID)
+        public async Task<string> AddMessageToDayAsync(Entities.Message message, int dayID, IFormFile uploadedFile)
         {
             var day = _dayBLL.FindByID(dayID);
 
-            if(day == null)
+            if (day == null)
             {
                 return BuildResultString((false, "День не найден"));
+            }
+
+            if (uploadedFile != null)
+            {
+                message.Path = await AddFileAsync(uploadedFile);
             }
 
             message.Day = day;
@@ -185,18 +197,45 @@ namespace IvritSchool.Controllers
             return BuildResultString((true, "Сообщение было добавлено"));
         }
 
+        public async Task<string> AddFileAsync(IFormFile uploadedFile)
+        {
+            // путь к папке Files
+            string path = "/files/" + Guid.NewGuid() +  "." + uploadedFile.ContentType.Split("/")[1];
+            // сохраняем файл в папку Files в каталоге wwwroot
+            using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+            {
+                await uploadedFile.CopyToAsync(fileStream);
+            }
+            return path;
+        }
+
 
         [HttpGet]
         public ActionResult EditMessage(int messageID)
         {
-            var message = _messageRepository.Find(x=>x.ID == messageID);
+            var message = _messageRepository.Find(x => x.ID == messageID);
 
-            if(message == null)
+            if (message == null)
             {
                 return NotFound();
             }
 
             return View(message);
+        }
+
+        [HttpPost]
+        public async Task<string> EditMessage(Entities.Message message, IFormFile uploadedFile)
+        {
+            if (uploadedFile != null)
+            {
+                if (System.IO.File.Exists(message.Path))
+                {
+                    System.IO.File.Delete(message.Path);
+                }
+                message.Path = await AddFileAsync(uploadedFile);
+            }
+            _messageBLL.Update(message);
+            return BuildResultString((true, "Сообщение было обновлено"));
         }
 
         #endregion
