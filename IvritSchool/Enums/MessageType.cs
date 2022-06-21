@@ -8,6 +8,7 @@ namespace IvritSchool.Enums
     public enum MessageType : int
     {
         Text = 1,
-        Audio = 2
+        Audio = 2, 
+        File = 3
     }
 }
