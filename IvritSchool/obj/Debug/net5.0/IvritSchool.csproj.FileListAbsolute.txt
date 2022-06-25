@@ -363,3 +363,11 @@ E:\BOTs\GitHub\iiaa\IvritSchool\obj\Debug\net5.0\IvritSchool.dll
 E:\BOTs\GitHub\iiaa\IvritSchool\obj\Debug\net5.0\ref\IvritSchool.dll
 E:\BOTs\GitHub\iiaa\IvritSchool\obj\Debug\net5.0\IvritSchool.pdb
 E:\BOTs\GitHub\iiaa\IvritSchool\obj\Debug\net5.0\IvritSchool.genruntimeconfig.cache
+K:\Users\nikol\source\repos\IvritSchool\IvritSchool\obj\Debug\net5.0\Razor\Views\Home\AddDay.cshtml.g.cs
+K:\Users\nikol\source\repos\IvritSchool\IvritSchool\obj\Debug\net5.0\Razor\Views\Home\AddMessageToDay.cshtml.g.cs
+K:\Users\nikol\source\repos\IvritSchool\IvritSchool\obj\Debug\net5.0\Razor\Views\Home\AddTariff.cshtml.g.cs
+K:\Users\nikol\source\repos\IvritSchool\IvritSchool\obj\Debug\net5.0\Razor\Views\Home\AllDays.cshtml.g.cs
+K:\Users\nikol\source\repos\IvritSchool\IvritSchool\obj\Debug\net5.0\Razor\Views\Home\AllTarifs.cshtml.g.cs
+K:\Users\nikol\source\repos\IvritSchool\IvritSchool\obj\Debug\net5.0\Razor\Views\Home\DaysMessages.cshtml.g.cs
+K:\Users\nikol\source\repos\IvritSchool\IvritSchool\obj\Debug\net5.0\Razor\Views\Home\EditDay.cshtml.g.cs
+K:\Users\nikol\source\repos\IvritSchool\IvritSchool\obj\Debug\net5.0\Razor\Views\Home\EditMessage.cshtml.g.cs
