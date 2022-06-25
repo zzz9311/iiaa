@@ -1,5 +1,6 @@
 ﻿using IvritSchool.Data;
 using IvritSchool.Entities;
+using IvritSchool.Enums;
 using IvritSchool.Finder;
 using IvritSchool.Repository;
 
@@ -50,6 +51,16 @@ namespace IvritSchool.BLL.Users
             changingUser.IsBanned = user.IsBanned;
 
             _saveChangesCommand.SaveChanges();
+        }
+
+        public void SetStaus(long tid, UserStatus status)
+        {
+            var user = _repository.Find(x => x.TID == tid);
+            if(user != null)
+            {
+                user.Status = status;
+                _saveChangesCommand.SaveChanges();
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using IvritSchool.Commands;
 using IvritSchool.Data;
 using IvritSchool.Finder;
 using IvritSchool.Repository;
+using IvritSchool.Senders;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace IvritSchool.Extensions
             services.AddScoped<IDayBLL, DayBLL>();
             services.AddScoped<ITariffBLL, TariffBLL>();
             services.AddScoped<IMessageBLL, MessageBLL>();
+            services.AddScoped<ISender, Sender>();
 
             return services;
         }

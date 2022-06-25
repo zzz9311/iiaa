@@ -6,6 +6,8 @@ using IvritSchool.BLL.Users;
 using IvritSchool.Entities;
 using IvritSchool.Models;
 using IvritSchool.Repository;
+using IvritSchool.Senders;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,11 +30,13 @@ namespace IvritSchool.Controllers
         private readonly IRepository<Days> _daysRepository;
         private readonly IRepository<Tariff> _tariffRepository;
         private readonly IRepository<Entities.Message> _messageRepository;
+        private readonly IRepository<Entities.PayedUsers> _payedUsersRepository;
         private readonly IUserBLL _userBLL;
         private readonly IDayBLL _dayBLL;
         private readonly ITariffBLL _tariffBLL;
         private readonly IMessageBLL _messageBLL;
         private readonly IWebHostEnvironment _appEnvironment;
+        private readonly ISender _sender;
 
         public HomeController(IRepository<BotUser> userRepository,
                               IUserBLL userBLL,
@@ -42,7 +46,9 @@ namespace IvritSchool.Controllers
                               ITariffBLL tariffBLL,
                               IMessageBLL messageBLL,
                               IRepository<Entities.Message> messageRepository,
-                              IWebHostEnvironment appEnvironment)
+                              IWebHostEnvironment appEnvironment,
+                              IRepository<PayedUsers> payedUsersRepository, 
+                              ISender sender)
         {
             _userRepository = userRepository;
             _userBLL = userBLL;
@@ -53,6 +59,8 @@ namespace IvritSchool.Controllers
             _messageBLL = messageBLL;
             _messageRepository = messageRepository;
             _appEnvironment = appEnvironment;
+            _payedUsersRepository = payedUsersRepository;
+            _sender = sender;
         }
         private string BuildResultString((bool, string) tuple)
         {
@@ -239,5 +247,53 @@ namespace IvritSchool.Controllers
         }
 
         #endregion
+
+        #region
+        [AllowAnonymous]
+        public async Task SendLessons()
+        {
+            var payedUsers = _payedUsersRepository.Include(x => x.User)
+                                                  .Include(x => x.Tariff)
+                                                  .Include(x => x.Tariff.Days)
+                                                  .Include(x => x.CurrentDay)
+                                                  .ToArray(x => x.ClientStatus == Enums.ClientStatus.Studing);
+            //var client = await Bot.Bot.Get();
+
+            foreach (var el in payedUsers)
+            {
+
+                var dayToSend = el.Tariff.Days.Where(i => i.DayNumber == el.CurrentDay.DayNumber).FirstOrDefault();
+
+                if(dayToSend == null)
+                {
+                    continue;
+                }
+
+                foreach(var lesson in dayToSend.Messages)
+                {
+                    //await _sender.SendMessage(lesson, el.User.TID, el.Tariff, client);
+                }
+
+                var dayIndex = el.Tariff.Days.ToList().FindIndex(a => a == dayToSend);
+
+                if(dayIndex != -1)
+                {
+                    var nextDay = el.Tariff.Days.ToArray()[dayIndex + 1];
+                    if(nextDay != null)
+                    {
+                        el.CurrentDay = nextDay;
+                    }
+                    else
+                    {
+                        el.ClientStatus = Enums.ClientStatus.NotStuding;
+                    }
+                }
+            }
+        }
+        #endregion
     }
 }
+
+
+//5,6,7,10
+//5

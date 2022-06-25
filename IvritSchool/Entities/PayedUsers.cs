@@ -11,10 +11,12 @@ namespace IvritSchool.Entities
         public string Email { get; set; }
         public PasswordType PasswordType { get; set; }
 
-        //Tariff
+        public Tariff Tariff { get; set; }
         public ClientStatus ClientStatus { get; set; }
         public DateTime? LearnStartsFrom { get; set; }
         public BotUser User { get; set; }
+
+        public Days CurrentDay { get; set; }
 
     }
 }

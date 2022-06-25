@@ -17,6 +17,7 @@ namespace IvritSchool.Data
         public DbSet<BotUser> BotUsers { get; set; }
         public DbSet<Days> Days { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<PayedUsers> PayedUsers { get; set; }
 
         public void SaveChanges()
         { 

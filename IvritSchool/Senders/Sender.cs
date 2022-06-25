@@ -1,4 +1,5 @@
-﻿using IvritSchool.Enums;
+﻿using IvritSchool.Entities;
+using IvritSchool.Enums;
 using IvritSchool.Senders.MessageTypes;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,15 @@ using Telegram.Bot;
 
 namespace IvritSchool.Senders
 {
-    public class Sender
+    public class Sender : ISender
     {
-        public async Task SendMessage(Entities.Message message, long tid, TelegramBotClient client)
+        public async Task SendMessage(Message message, long tid, Tariff userTariff, TelegramBotClient client)
         {
+            if (message.VIP && !userTariff.VIP)
+            {
+                return;
+            }
+
             var messageType = GetMessageType(message.Type);
             await messageType.SendAsync(message, client, tid);
         }
