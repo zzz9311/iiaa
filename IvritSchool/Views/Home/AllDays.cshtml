@@ -1,0 +1,29 @@
+﻿@model IvritSchool.Entities.Days[]
+@{
+    ViewBag.Title = "AdminUserPanel";
+}
+<a href="@Url.Action("AddDay", "Home")">Добавить день</a>
+<br />
+<br/>
+<h2>Все дни учебного плана(@Model.Count())</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Номер дня</th>
+            <th scope="col">Редактировать</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var el in Model)
+        {
+                <tr>
+                    <th scope="row">@el.ID</th>
+                    <td>@el.DayNumber</td>
+                    <td><a href="@Url.Action("EditDay", "home", new { dayID = @el.ID })">Редактировать</a></td>
+                </tr>            
+        }
+    </tbody>
+</table>

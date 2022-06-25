@@ -10,5 +10,6 @@ namespace IvritSchool.Entities
         public int ID { get; set; }
         public int DayNumber { get; set; }
         public List<Message> Messages { get; set; } 
+        public IEnumerable<Tariff> Tariffs { get; set; }
     }
 }

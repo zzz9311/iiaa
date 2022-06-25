@@ -14,5 +14,6 @@ namespace IvritSchool.Repository
         public TEntity[] ToArray(Func<TEntity, bool> predicate);
         public TEntity[] ToArray();
         public IRepository<TEntity> Include<TProperty>(Expression<Func<TEntity, TProperty>> includeProperty);
+        public IRepository<TEntity> Include<TProperty>(Expression<Func<TEntity, TProperty[]>> includeProperty);
     }
 }

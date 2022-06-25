@@ -1,0 +1,53 @@
+﻿@model IvritSchool.Entities.Message
+
+@{
+    ViewBag.Title = "EditUser";
+}
+
+<h2>Редактирование сообщения</h2>
+
+@using (Html.AjaxBeginForm("EditMessage", new AjaxOptions { UpdateTargetId = "Result", HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-8">
+                <input type="hidden" asp-for="@Model.ID" />
+                <label for="formGroupExampleInput">Текст сообщения</label>
+                <textarea class="form-control" rows="7" cols="100" asp-for="@Model.Text" placeholder=""></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                <label for="formGroupExampleInput">Текущий файл</label>
+                <a href="@Model.Path">Файл</a><br />
+                <label for="formGroupExampleInput">Выберите файл для загрузки</label><br />
+                <input type="file" name="uploadedFile" /><br>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                <label for="formGroupExampleInput">
+                    VIP
+                    <input asp-for="@Model.VIP">
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-4">
+            <input type="submit" class="form-control" value="Изменить" />
+        </div>
+    </div>
+}
+<div>
+    <h3 id="Result"></h3>
+</div>
+
+

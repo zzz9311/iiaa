@@ -11,9 +11,11 @@ namespace IvritSchool.Repository
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private DbSet<TEntity> _set;
+        private IQueryable<TEntity> _query;
         public Repository(ApplicationDbContext dbContext)
         {
             _set = dbContext.Set<TEntity>();
+            _query = dbContext.Set<TEntity>();
         }
 
         public void Insert(TEntity entity)
@@ -28,22 +30,28 @@ namespace IvritSchool.Repository
 
         public TEntity Find(Func<TEntity, bool> predicate)
         {
-            return _set.Where(predicate).FirstOrDefault();
+            return _query.Where(predicate).FirstOrDefault();
         }
 
         public TEntity[] ToArray(Func<TEntity, bool> predicate)
         {
-            return _set.Where(predicate).ToArray();
+            return _query.Where(predicate).ToArray();
         }
 
         public TEntity[] ToArray()
         {
-            return _set.ToArray();
+            return _query.ToArray();
         }
 
         public IRepository<TEntity> Include<TProperty>(Expression<Func<TEntity, TProperty>> includeProperty)
         {
-            _set = (DbSet<TEntity>) _set.Include(includeProperty);
+            _query = _query.Include(includeProperty);
+            return this;
+        }
+
+        public IRepository<TEntity> Include<TProperty>(Expression<Func<TEntity, TProperty[]>> includeProperty)
+        {
+            _query = _query.Include(includeProperty);
             return this;
         }
     }

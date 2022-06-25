@@ -19,6 +19,21 @@ namespace IvritSchool.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("DaysTariff", b =>
+                {
+                    b.Property<int>("DaysID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TariffsID")
+                        .HasColumnType("int");
+
+                    b.HasKey("DaysID", "TariffsID");
+
+                    b.HasIndex("TariffsID");
+
+                    b.ToTable("DaysTariff");
+                });
+
             modelBuilder.Entity("IvritSchool.Entities.BotUser", b =>
                 {
                     b.Property<int>("ID")
@@ -68,7 +83,7 @@ namespace IvritSchool.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("DaysID")
+                    b.Property<int?>("DayID")
                         .HasColumnType("int");
 
                     b.Property<string>("Path")
@@ -80,11 +95,32 @@ namespace IvritSchool.Data.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
+                    b.Property<bool>("VIP")
+                        .HasColumnType("bit");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("DaysID");
+                    b.HasIndex("DayID");
 
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("IvritSchool.Entities.Tariff", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("VIP")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Tariff");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -287,11 +323,28 @@ namespace IvritSchool.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("IvritSchool.Entities.Message", b =>
+            modelBuilder.Entity("DaysTariff", b =>
                 {
                     b.HasOne("IvritSchool.Entities.Days", null)
+                        .WithMany()
+                        .HasForeignKey("DaysID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IvritSchool.Entities.Tariff", null)
+                        .WithMany()
+                        .HasForeignKey("TariffsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IvritSchool.Entities.Message", b =>
+                {
+                    b.HasOne("IvritSchool.Entities.Days", "Day")
                         .WithMany("Messages")
-                        .HasForeignKey("DaysID");
+                        .HasForeignKey("DayID");
+
+                    b.Navigation("Day");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
