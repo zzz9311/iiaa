@@ -14,7 +14,5 @@ namespace IvritSchool.Entities
         public UserStatus Status { get; set; }
         public DateTime FirstDate { get; set; }
         public string Name { get; set; }
-
-        public virtual BotUser User { get; set; }
     }
 }

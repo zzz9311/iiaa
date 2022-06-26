@@ -1,6 +1,7 @@
 ﻿using AspNetCore.Unobtrusive.Ajax;
 using IvritSchool.BLL.Days;
 using IvritSchool.BLL.Messages;
+using IvritSchool.BLL.SendersLogic;
 using IvritSchool.BLL.Tariffs;
 using IvritSchool.BLL.Users;
 using IvritSchool.Entities;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace IvritSchool.Controllers
@@ -31,6 +33,7 @@ namespace IvritSchool.Controllers
         private readonly IMessageBLL _messageBLL;
         private readonly IWebHostEnvironment _appEnvironment;
         private readonly ISender _sender;
+        private readonly ILessonSenderBLL lessonSenderBLL;
 
         public HomeController(IRepository<BotUser> userRepository,
                               IUserBLL userBLL,
@@ -41,8 +44,9 @@ namespace IvritSchool.Controllers
                               IMessageBLL messageBLL,
                               IRepository<Entities.Message> messageRepository,
                               IWebHostEnvironment appEnvironment,
-                              IRepository<PayedUsers> payedUsersRepository, 
-                              ISender sender)
+                              IRepository<PayedUsers> payedUsersRepository,
+                              ISender sender, 
+                              ILessonSenderBLL lessonSenderBLL)
         {
             _userRepository = userRepository;
             _userBLL = userBLL;
@@ -55,6 +59,7 @@ namespace IvritSchool.Controllers
             _appEnvironment = appEnvironment;
             _payedUsersRepository = payedUsersRepository;
             _sender = sender;
+            this.lessonSenderBLL = lessonSenderBLL;
         }
         private string BuildResultString((bool, string) tuple)
         {
@@ -94,7 +99,6 @@ namespace IvritSchool.Controllers
 
         public ActionResult AddDay()
         {
-            _userRepository.Include(x => x.Name).Include(y => y.Name).Find(x => x.IsBanned);
             return View();
         }
 
@@ -243,47 +247,11 @@ namespace IvritSchool.Controllers
 
         #endregion
 
-        #region
+        #region sender
         [AllowAnonymous]
         public async Task SendLessons()
         {
-            var payedUsers = _payedUsersRepository.Include(x => x.User)
-                                                  .Include(x => x.Tariff)
-                                                  .Include(x => x.Tariff.Days)
-                                                  .Include(x => x.CurrentDay)
-                                                  .ToArray(x => x.ClientStatus == Enums.ClientStatus.Studing);
-            //var client = await Bot.Bot.Get();
-
-            foreach (var el in payedUsers)
-            {
-
-                var dayToSend = el.Tariff.Days.Where(i => i.DayNumber == el.CurrentDay.DayNumber).FirstOrDefault();
-
-                if(dayToSend == null)
-                {
-                    continue;
-                }
-
-                foreach(var lesson in dayToSend.Messages)
-                {
-                    //await _sender.SendMessage(lesson, el.User.TID, el.Tariff, client);
-                }
-
-                var dayIndex = el.Tariff.Days.ToList().FindIndex(a => a == dayToSend);
-
-                if(dayIndex != -1)
-                {
-                    var nextDay = el.Tariff.Days.ToArray()[dayIndex + 1];
-                    if(nextDay != null)
-                    {
-                        el.CurrentDay = nextDay;
-                    }
-                    else
-                    {
-                        el.ClientStatus = Enums.ClientStatus.NotStuding;
-                    }
-                }
-            }
+            await lessonSenderBLL.SendAsync();
         }
         #endregion
     }

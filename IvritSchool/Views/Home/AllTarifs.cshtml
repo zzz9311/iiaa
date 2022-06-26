@@ -2,7 +2,9 @@
 @{
     ViewBag.Title = "AdminUserPanel";
 }
-
+<a href="@Url.Action("AddTariff", "Home")">Добавить тариф</a>
+<br />
+<br/>
 <h2>Все тарифы(@Model.Count())</h2>
 
 <table class="table table-bordered">

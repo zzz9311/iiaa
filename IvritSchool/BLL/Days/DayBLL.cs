@@ -23,6 +23,11 @@ namespace IvritSchool.BLL.Days
         }
         public void Insert(Entities.Days day)
         {
+            if(day.DayNumber == 0)
+            {
+                throw new ArgumentException("Введите номер дня");
+            }
+
             var DayNumberExists = _repository.Find(x => x.DayNumber == day.DayNumber);
 
             if (DayNumberExists != null)

@@ -1,28 +1,37 @@
-﻿
+﻿@model IvritSchool.Entities.Tariff
 @{
-    ViewBag.Title = "AddDay";
+    ViewBag.Title = "AddTariff";
 }
 
-<h2>Добавление дня</h2>
+<h2>Добавление тарифа</h2>
 <br />
 
 @using (Html.AjaxBeginForm("AddTariff", new AjaxOptions { UpdateTargetId = "Result", HttpMethod = "POST" }))
 {
-<div class="form-horizontal">
-    <div class="form-group">
-        <div class="col-md-10">
-            <label for="formGroupExampleInput">Название тарифа</label>
-            <input type="text" class="form-control" value="" name="Name" placeholder="">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="mb-3">
+                <label for="formGroupExampleInput">Название тарифа</label>
+                <input type="text" class="form-control" value="" name="Name" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="mb-3">
+                <label for="formGroupExampleInput">Дни тарифа(по желанию)</label>
+                <input type="text" class="form-control" value="" name="daysPredicate" placeholder="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="mb-3">
+                <label for="formGroupExampleInput">
+                    VIP
+                    <input asp-for="@Model.VIP">
+                </label>
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-md-10">
-            <label for="formGroupExampleInput">Дни тарифа(по желанию)</label>
-            <input type="text" class="form-control" value="" name="daysPredicate" placeholder="">
-        </div>
-    </div>
-</div>
-    <input type="submit" class="form-control" value="Добавить" />
+    <input type="submit" class="btn btn-primary" value="Добавить" />
 }
 <div>
     <h3 id="Result"></h3>

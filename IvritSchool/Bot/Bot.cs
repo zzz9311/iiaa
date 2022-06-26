@@ -22,7 +22,7 @@ namespace IvritSchool.Bot
             client = new TelegramBotClient(AppSettings.Key);
 
             string url = string.Format(AppSettings.Url, "message/update");
-            await client.SetWebhookAsync(url);
+            //await client.SetWebhookAsync(url);
             return client;
         }
     }
