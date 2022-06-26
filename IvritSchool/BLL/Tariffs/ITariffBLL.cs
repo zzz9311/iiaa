@@ -10,6 +10,6 @@ namespace IvritSchool.BLL.Tariffs
     {
         public void Insert(Tariff tariff, string daysPredicate = null);
         public Tariff Get(int id);
-        public void Edit(Tariff tariff);
+        public void Edit(Tariff tariff, string daysPrecidate = null);
     }
 }

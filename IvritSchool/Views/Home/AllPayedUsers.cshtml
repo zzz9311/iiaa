@@ -1,0 +1,35 @@
+﻿@model IvritSchool.Entities.PayedUsers[]
+@{
+    ViewBag.Title = "AdminUserPanel";
+}
+
+<h2>Все оплаченные пользователи(@Model.Count())</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Почта</th>
+            <th scope="col">Статус учебы</th>
+            <th scope="col">Дата начала учебы</th>
+            <th scope="col">Редактировать</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var el in Model)
+        {
+            <tr>
+                <th scope="row">@el.ID</th>
+                <td>@el.Name</td>
+                <td>@el.SureName</td>
+                <td>@el.Email</td>
+                <td>@el.ClientStatus</td>
+                <td>@el.LearnStartsFrom</td>
+                <td><a href="@Url.Action("EditPayedUser", "home", new { Id = @el.ID })">Edit</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

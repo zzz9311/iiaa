@@ -24,7 +24,7 @@
             <th scope="row">@el.ID</th>
             <td>@el.Name</td>
             <td>@(el.VIP == true ? "ДА":"НЕТ")</td>
-            <td><a href="@Url.Action("EditDay", "home", new { Id = @el.ID })">Редактировать</a></td>
+            <td><a href="@Url.Action("EditTariff", "home", new { TariffId = @el.ID })">Редактировать</a></td>
         </tr>
         }
     </tbody>

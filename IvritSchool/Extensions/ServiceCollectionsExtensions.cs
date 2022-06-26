@@ -1,5 +1,6 @@
 ﻿using IvritSchool.BLL.Days;
 using IvritSchool.BLL.Messages;
+using IvritSchool.BLL.PayedUsers;
 using IvritSchool.BLL.SendersLogic;
 using IvritSchool.BLL.Tariffs;
 using IvritSchool.BLL.Users;
@@ -27,6 +28,7 @@ namespace IvritSchool.Extensions
             services.AddScoped<IMessageBLL, MessageBLL>();
             services.AddScoped<ISender, Sender>();
             services.AddScoped<ILessonSenderBLL, LessonSenderBLL>();
+            services.AddScoped<IPayedUser, PayedUser>();
 
             return services;
         }

@@ -27,6 +27,25 @@ namespace IvritSchool.BLL.PayedUsers
             _saveChangesCommand = saveChangesCommand;
             _userBLL = userBLL;
         }
+
+        public void Edit(Entities.PayedUsers payedUser)
+        {
+            var oldPayedUser = _finder.Find(payedUser.ID);
+
+            if (oldPayedUser == null)
+            {
+                throw new ArgumentNullException("Не найден пользователь");
+            }
+
+            oldPayedUser.ClientStatus = payedUser.ClientStatus;
+            oldPayedUser.Email = payedUser.Email;
+            oldPayedUser.Name = payedUser.Name;
+            oldPayedUser.SureName = payedUser.SureName;
+            oldPayedUser.Tariff = payedUser.Tariff;
+
+            _saveChangesCommand.SaveChanges();
+        }
+
         public Entities.PayedUsers FindByEmail(string email)
         {
             return _repository.Find(x => x.Email == email);

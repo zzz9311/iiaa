@@ -28,13 +28,18 @@ namespace IvritSchool.BLL.Tariffs
             _dayBLL = dayBLL;
         }
 
-        public void Edit(Tariff tariff)
+        public void Edit(Tariff tariff, string daysPredicate)
         {
             var oldTariff = _finder.Find(tariff.ID);
 
-            if(oldTariff == null)
+            if (oldTariff == null)
             {
-                return;
+                throw new ArgumentException("Тариф не был найден");
+            }
+
+            if (!string.IsNullOrEmpty(daysPredicate))
+            {
+                oldTariff.Days = _dayBLL.GetDays(daysPredicate);
             }
 
             oldTariff.VIP = tariff.VIP;

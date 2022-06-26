@@ -39,9 +39,14 @@ namespace IvritSchool.Senders
                     {
                         return new VideoMessage();
                     }
+                case MessageType.Photo:
+                    {
+                        return new PhotoMessage();
+                    }
             }
-
             throw new ArgumentNullException("Sender = null");
         }
     }
 }
+
+

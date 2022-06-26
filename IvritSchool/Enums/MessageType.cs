@@ -10,6 +10,7 @@ namespace IvritSchool.Enums
         Text = 1,
         Audio = 2, 
         File = 3,
-        Video = 4
+        Video = 4,
+        Photo = 5
     }
 }

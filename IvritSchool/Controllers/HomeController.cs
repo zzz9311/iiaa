@@ -1,10 +1,12 @@
 ﻿using AspNetCore.Unobtrusive.Ajax;
 using IvritSchool.BLL.Days;
 using IvritSchool.BLL.Messages;
+using IvritSchool.BLL.PayedUsers;
 using IvritSchool.BLL.SendersLogic;
 using IvritSchool.BLL.Tariffs;
 using IvritSchool.BLL.Users;
 using IvritSchool.Entities;
+using IvritSchool.Enums;
 using IvritSchool.Repository;
 using IvritSchool.Senders;
 using Microsoft.AspNetCore.Authorization;
@@ -34,7 +36,7 @@ namespace IvritSchool.Controllers
         private readonly IWebHostEnvironment _appEnvironment;
         private readonly ISender _sender;
         private readonly ILessonSenderBLL lessonSenderBLL;
-
+        private readonly IPayedUser _payedUserBLL;
         public HomeController(IRepository<BotUser> userRepository,
                               IUserBLL userBLL,
                               IDayBLL dayBLL,
@@ -45,8 +47,9 @@ namespace IvritSchool.Controllers
                               IRepository<Entities.Message> messageRepository,
                               IWebHostEnvironment appEnvironment,
                               IRepository<PayedUsers> payedUsersRepository,
-                              ISender sender, 
-                              ILessonSenderBLL lessonSenderBLL)
+                              ISender sender,
+                              ILessonSenderBLL lessonSenderBLL, 
+                              IPayedUser payedUserBLL)
         {
             _userRepository = userRepository;
             _userBLL = userBLL;
@@ -60,6 +63,7 @@ namespace IvritSchool.Controllers
             _payedUsersRepository = payedUsersRepository;
             _sender = sender;
             this.lessonSenderBLL = lessonSenderBLL;
+            _payedUserBLL = payedUserBLL;
         }
         private string BuildResultString((bool, string) tuple)
         {
@@ -167,9 +171,18 @@ namespace IvritSchool.Controllers
         }
 
         [HttpPost]
-        public string EditTariff(Tariff tariff)
+        public string EditTariff(Tariff tariff, string daysPredicate = null)
         {
+            try
+            {
+                _tariffBLL.Edit(tariff, daysPredicate);
+            }
+            catch (ArgumentException ex)
+            {
+                return BuildResultString((false, ex.Message));
+            }
 
+            return BuildResultString((true, "Тариф был изменен"));
         }
         #endregion
 
@@ -184,10 +197,15 @@ namespace IvritSchool.Controllers
                 return NotFound();
             }
 
+
+
             List<SelectListItem> messageTypes = new()
             {
                 new SelectListItem { Value = "1", Text = "Текстовое" },
-                new SelectListItem { Value = "2", Text = "Аудио" }
+                new SelectListItem { Value = "2", Text = "Аудио" },
+                new SelectListItem { Value = "3", Text = "Файл" },
+                new SelectListItem { Value = "4", Text = "Видео" },
+                new SelectListItem { Value = "5", Text = "Фото" },
             };
 
             ViewBag.MessageTypes = messageTypes;
@@ -219,7 +237,7 @@ namespace IvritSchool.Controllers
         public async Task<string> AddFileAsync(IFormFile uploadedFile)
         {
             // путь к папке Files
-            string path = "/files/" + Guid.NewGuid() +  "." + uploadedFile.ContentType.Split("/")[1];
+            string path = "/files/" + Guid.NewGuid() + "." + uploadedFile.ContentType.Split("/")[1];
             // сохраняем файл в папку Files в каталоге wwwroot
             using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
             {
@@ -266,9 +284,42 @@ namespace IvritSchool.Controllers
             await lessonSenderBLL.SendAsync();
         }
         #endregion
+
+        #region PayedUsers
+
+        public ActionResult AllPayedUsers()
+        {
+            return View(_payedUsersRepository.ToArray());
+        }
+
+        [HttpGet]
+        public ActionResult EditPayedUser(int id)
+        {
+
+            var payedUser = _payedUsersRepository.Find(x => x.ID == id);
+            if (payedUser == null)
+            {
+                return NotFound();
+            }
+
+            return View(payedUser);
+        }
+
+
+        [HttpPost]
+        public string EditPayedUser(PayedUsers payesUser)
+        {
+            try
+            {
+                _payedUserBLL.Edit(payesUser);
+            }
+            catch (ArgumentException ex)
+            {
+                return BuildResultString((false, ex.Message));
+            }
+
+            return BuildResultString((true, "Оплаченный пользователь был изменен"));
+        }
+        #endregion
     }
 }
-
-
-//5,6,7,10
-//5

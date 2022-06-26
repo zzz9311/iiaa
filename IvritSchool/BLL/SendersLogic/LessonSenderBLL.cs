@@ -62,7 +62,7 @@ namespace IvritSchool.BLL.SendersLogic
                     {
                         if (dayIndex == el.Tariff.Days.Count() - 1)
                         {
-                            el.ClientStatus = Enums.ClientStatus.NotStuding;
+                            el.ClientStatus = Enums.ClientStatus.Ended;
                             continue;
                         }
 

@@ -1,0 +1,39 @@
+﻿@model IvritSchool.Entities.Tariff
+@{
+    ViewBag.Title = "AddTariff";
+}
+
+<h2>Изменение тарифа</h2>
+<br />
+
+@using (Html.AjaxBeginForm("EditTariff", new AjaxOptions { UpdateTargetId = "Result", HttpMethod = "POST" }))
+{
+    <input type="hidden" name="id" value="@Model.ID"/>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="mb-3">
+                <label for="formGroupExampleInput">Название тарифа</label>
+                <input type="text" class="form-control" value="@Model.Name" name="Name" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="mb-3">
+                <label for="formGroupExampleInput">Дни тарифа(по желанию)</label>
+                <input type="text" class="form-control" value="" name="daysPredicate" placeholder="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="mb-3">
+                <label for="formGroupExampleInput">
+                    VIP
+                    <input asp-for="@Model.VIP">
+                </label>
+            </div>
+        </div>
+    </div>
+    <input type="submit" class="btn btn-primary" value="Изменить" />
+}
+<div>
+    <h3 id="Result"></h3>
+</div>
