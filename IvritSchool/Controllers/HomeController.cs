@@ -4,21 +4,15 @@ using IvritSchool.BLL.Messages;
 using IvritSchool.BLL.Tariffs;
 using IvritSchool.BLL.Users;
 using IvritSchool.Entities;
-using IvritSchool.Models;
 using IvritSchool.Repository;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.SignalR.Protocol;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Telegram.Bot.Types;
 
 namespace IvritSchool.Controllers
 {
@@ -92,6 +86,7 @@ namespace IvritSchool.Controllers
 
         public ActionResult AddDay()
         {
+            _userRepository.Include(x => x.Name).Include(y => y.Name).Find(x => x.IsBanned);
             return View();
         }
 

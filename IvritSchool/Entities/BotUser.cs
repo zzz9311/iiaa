@@ -15,5 +15,6 @@ namespace IvritSchool.Entities
         public DateTime FirstDate { get; set; }
         public string Name { get; set; }
 
+        public virtual BotUser User { get; set; }
     }
 }
