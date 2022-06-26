@@ -16,6 +16,7 @@ namespace IvritSchool.BLL.Tariffs
         private readonly IFinder<Tariff> _finder;
         private readonly ISaveChangesCommand _saveChangesCommand;
         private readonly IDayBLL _dayBLL;
+
         public TariffBLL(IRepository<Tariff> repository,
                        IFinder<Tariff> finder,
                        ISaveChangesCommand saveChangesCommand, 
@@ -25,6 +26,26 @@ namespace IvritSchool.BLL.Tariffs
             _finder = finder;
             _saveChangesCommand = saveChangesCommand;
             _dayBLL = dayBLL;
+        }
+
+        public void Edit(Tariff tariff)
+        {
+            var oldTariff = _finder.Find(tariff.ID);
+
+            if(oldTariff == null)
+            {
+                return;
+            }
+
+            oldTariff.VIP = tariff.VIP;
+            oldTariff.Name = tariff.Name;
+
+            _saveChangesCommand.SaveChanges();
+        }
+
+        public Tariff Get(int id)
+        {
+            return _finder.Find(id);
         }
 
         public void Insert(Tariff tariff, string daysPredicate = null)

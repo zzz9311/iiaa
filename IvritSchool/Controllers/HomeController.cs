@@ -159,6 +159,18 @@ namespace IvritSchool.Controllers
             _tariffBLL.Insert(tariff, daysPredicate);
             return BuildResultString((true, "Тариф был добавлен"));
         }
+
+        [HttpGet]
+        public ActionResult EditTariff(int tariffID)
+        {
+            return View(_tariffBLL.Get(tariffID));
+        }
+
+        [HttpPost]
+        public string EditTariff(Tariff tariff)
+        {
+
+        }
         #endregion
 
         #region Messages
