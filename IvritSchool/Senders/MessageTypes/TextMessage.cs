@@ -11,7 +11,7 @@ namespace IvritSchool.Senders.MessageTypes
     {
         public async Task SendAsync(Message message, TelegramBotClient client, long tid)
         {
-            await client.SendTextMessageAsync(tid, message.Text);
+            await client.SendTextMessageAsync(tid, message.Text, protectContent: true);
         }
     }
 }

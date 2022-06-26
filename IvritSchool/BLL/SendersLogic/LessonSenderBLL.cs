@@ -50,10 +50,9 @@ namespace IvritSchool.BLL.SendersLogic
                         {
                             await _sender.SendMessage(lesson, el.User.TID, el.Tariff, client);
                         }
-                        catch (System.Exception)
+                        catch (System.Exception ex)
                         {
                         }
-
                     }
 
                     var dayIndex = el.Tariff.Days.ToList().FindIndex(a => a == dayToSend);

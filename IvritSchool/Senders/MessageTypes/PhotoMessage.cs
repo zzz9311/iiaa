@@ -8,7 +8,7 @@ namespace IvritSchool.Senders.MessageTypes
     {
         public async Task SendAsync(Message message, TelegramBotClient client, long tid)
         {
-            await client.SendPhotoAsync(tid, $"{Bot.AppSettings.baseUrl}/{message.Path}");
+            await client.SendPhotoAsync(tid, $"{Bot.AppSettings.baseUrl}/{message.Path}", protectContent: true);
         }
     }
 }

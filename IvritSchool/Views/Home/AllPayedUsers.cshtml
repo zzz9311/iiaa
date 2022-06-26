@@ -2,7 +2,9 @@
 @{
     ViewBag.Title = "AdminUserPanel";
 }
-
+<a href="@Url.Action("AddPayedUser", "Home")">Добавить оплату для пользователя</a>
+<br />
+<br />
 <h2>Все оплаченные пользователи(@Model.Count())</h2>
 
 <table class="table table-bordered">

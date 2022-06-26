@@ -1,0 +1,36 @@
+﻿@model IvritSchool.Entities.PayedUsers
+
+@{
+    ViewBag.Title = "EditUser";
+}
+
+<h2>Добавление оплаты для пользователя</h2>
+<br />
+
+@using (Html.AjaxBeginForm("AddPayedUser", new AjaxOptions { UpdateTargetId = "Result", HttpMethod = "POST" }))
+{
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="mb-3">
+                <label for="formGroupExampleInput">Имя</label>
+                <input type="text" class="form-control" name="Name" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="mb-3">
+                <label for="formGroupExampleInput">Фамилия</label>
+                <input type="text" class="form-control" name="SureName" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="mb-3">
+                <label for="formGroupExampleInput">Почта</label>
+                <input type="email" class="form-control" name="Email" placeholder="">
+            </div>
+        </div>
+    </div>
+    <input type="submit" class="btn btn-primary" value="Добавить" />
+}
+<div>
+    <h3 id="Result"></h3>
+</div>

@@ -4,7 +4,7 @@
     ViewBag.Title = "EditUser";
 }
 
-<h2>Редактирования пользователя @(Model.Name == null ? "" : Model.Name)</h2>
+<h2>Редактирования оплченного пользователя @(Model.Name == null ? "" : Model.Name)</h2>
 <br />
 
 @using (Html.AjaxBeginForm("EditPayedUser", new AjaxOptions { UpdateTargetId = "Result", HttpMethod = "POST" }))

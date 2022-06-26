@@ -320,6 +320,19 @@ namespace IvritSchool.Controllers
 
             return BuildResultString((true, "Оплаченный пользователь был изменен"));
         }
+
+        [HttpGet]
+        public ActionResult AddPayedUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public string AddPayedUser(Entities.PayedUsers payedUser)
+        {
+            _payedUserBLL.Add(payedUser);
+            return BuildResultString((true, "Пользователь был добавлен"));
+        }
         #endregion
     }
 }

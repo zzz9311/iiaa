@@ -28,6 +28,13 @@ namespace IvritSchool.BLL.PayedUsers
             _userBLL = userBLL;
         }
 
+        public void Add(Entities.PayedUsers payedUser)
+        {
+            _repository.Insert(payedUser);
+            payedUser.ClientStatus = Enums.ClientStatus.NotStuding;
+            _saveChangesCommand.SaveChanges();
+        }
+
         public void Edit(Entities.PayedUsers payedUser)
         {
             var oldPayedUser = _finder.Find(payedUser.ID);

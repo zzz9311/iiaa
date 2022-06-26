@@ -12,5 +12,6 @@ namespace IvritSchool.BLL.PayedUsers
         Entities.PayedUsers FindByEmail(string email);
         SetPayedUserStatus SetUser(long tid, string email);
         void Edit(Entities.PayedUsers payedUser);
+        void Add(Entities.PayedUsers payedUser);
     }
 }
