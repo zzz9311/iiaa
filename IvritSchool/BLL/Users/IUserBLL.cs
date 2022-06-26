@@ -1,4 +1,5 @@
 ﻿using IvritSchool.Entities;
+using IvritSchool.Enums;
 
 namespace IvritSchool.BLL.Users
 {
@@ -9,5 +10,6 @@ namespace IvritSchool.BLL.Users
         bool IsBanned(long tid);
         BotUser GetByID(int id);
         BotUser GetByTID(long tid);
+        void SetStaus(long tid, UserStatus status);
     }
 }

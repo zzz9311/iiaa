@@ -2,6 +2,7 @@
 {
     public enum UserStatus : int
     {
-        None = 0
+        None = 0,
+        FindEmail = 1
     }
 }
