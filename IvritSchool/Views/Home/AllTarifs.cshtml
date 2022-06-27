@@ -4,7 +4,7 @@
 }
 <a href="@Url.Action("AddTariff", "Home")">Добавить тариф</a>
 <br />
-<br/>
+<br />
 <h2>Все тарифы(@Model.Count())</h2>
 
 <table class="table table-bordered">
@@ -13,19 +13,28 @@
             <th scope="col">Id</th>
             <th scope="col">Название тарифа</th>
             <th scope="col">VIP</th>
+            <th scope="col">Список дней</th>
             <th scope="col">Редактировать</th>
+            <th scope="col">Удалить</th>
         </tr>
     </thead>
     <tbody>
 
         @foreach (var el in Model)
         {
-        <tr>
-            <th scope="row">@el.ID</th>
-            <td>@el.Name</td>
-            <td>@(el.VIP == true ? "ДА":"НЕТ")</td>
-            <td><a href="@Url.Action("EditTariff", "home", new { TariffId = @el.ID })">Редактировать</a></td>
-        </tr>
+            <tr>
+                <th scope="row">@el.ID</th>
+                <td>@el.Name</td>
+                <td>@(el.VIP == true ? "ДА":"НЕТ")</td>
+                <td><a href="@Url.Action("AllDays", "home", new { id = @el.ID })">Список дней</a></td>
+                <td><a href="@Url.Action("EditTariff", "home", new { TariffId = @el.ID })">Редактировать</a></td>
+                <td>
+                    <form asp-action="DeleteTariff" asp-controller="home">
+                        <input type="hidden" value="@el.ID" name="tariffId" />
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </form>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

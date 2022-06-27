@@ -2,6 +2,7 @@
 using IvritSchool.Data;
 using IvritSchool.Entities;
 using IvritSchool.Finder;
+using IvritSchool.Helpers;
 using IvritSchool.Repository;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,14 @@ namespace IvritSchool.BLL.Tariffs
             _dayBLL = dayBLL;
         }
 
+        public void DeleteTariff(int id)
+        {
+            var tariff = _finder.Find(id);
+            ThrowHelper.ThrowIfNull(tariff, "Тариф равен нулю");
+            _repository.Delete(tariff);
+            _saveChangesCommand.SaveChanges();
+        }
+
         public void Edit(Tariff tariff, string daysPredicate)
         {
             var oldTariff = _finder.Find(tariff.ID);
@@ -51,6 +60,11 @@ namespace IvritSchool.BLL.Tariffs
         public Tariff Get(int id)
         {
             return _finder.Find(id);
+        }
+
+        public Tariff[] GetList()
+        {
+            return _repository.ToArray();
         }
 
         public void Insert(Tariff tariff, string daysPredicate = null)

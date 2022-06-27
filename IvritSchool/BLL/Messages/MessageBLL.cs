@@ -1,5 +1,6 @@
 ﻿using IvritSchool.Data;
 using IvritSchool.Finder;
+using IvritSchool.Helpers;
 using IvritSchool.Repository;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,14 @@ namespace IvritSchool.BLL.Messages
             _repository = repository;
             _finder = finder;
             _saveChangesCommand = saveChangesCommand;
+        }
+
+        public void Delete(int id)
+        {
+            var message = _finder.Find(id);
+            ThrowHelper.ThrowIfNull(message, "Сообщение равно нулю");
+            _repository.Delete(message);
+            _saveChangesCommand.SaveChanges();
         }
 
         public void Insert(Entities.Message message)

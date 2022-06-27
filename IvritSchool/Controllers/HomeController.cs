@@ -96,9 +96,15 @@ namespace IvritSchool.Controllers
 
         #region Day
         [HttpGet]
-        public ActionResult AllDays()
+        public ActionResult AllDays(int? id = null)
         {
-            return View(_daysRepository.ToArray());
+            if (id == null)
+            {
+                return View(_daysRepository.ToArray());
+            }
+            var days = _tariffRepository.Include(i => i.Days).ToArray(i => i.ID == id).FirstOrDefault().Days.ToArray();
+
+            return View(days);
         }
 
         public ActionResult AddDay()
@@ -139,8 +145,17 @@ namespace IvritSchool.Controllers
         public ActionResult DaysMessages(int dayID)
         {
             var daysMessages = _messageRepository.Include(x => x.Day).ToArray(x => x.Day.ID == dayID);
+            ViewBag.DayId = dayID;
 
             return View(daysMessages);
+        }
+
+
+        [HttpPost]
+        public ActionResult DeleteDay(int dayID)
+        {
+            _dayBLL.Delete(dayID);
+            return RedirectToAction("AllDays");
         }
         #endregion
 
@@ -183,6 +198,13 @@ namespace IvritSchool.Controllers
             }
 
             return BuildResultString((true, "Тариф был изменен"));
+        }
+
+        [HttpPost]
+        public ActionResult DeleteTariff(int tariffId)
+        {
+            _tariffBLL.DeleteTariff(tariffId);
+            return RedirectToAction("AllTarifs");
         }
         #endregion
 
@@ -275,6 +297,13 @@ namespace IvritSchool.Controllers
             return BuildResultString((true, "Сообщение было обновлено"));
         }
 
+        [HttpPost]
+        public ActionResult DeleteMessage(int messageID)
+        {
+            _messageBLL.Delete(messageID);
+            return RedirectToAction("DaysMessages");
+        }
+
         #endregion
 
         #region sender
@@ -302,6 +331,16 @@ namespace IvritSchool.Controllers
                 return NotFound();
             }
 
+            List<SelectListItem> userStatuses = new()
+            {
+                new SelectListItem { Value = "0", Text = "На паузе" },
+                new SelectListItem { Value = "1", Text = "Закончил обучение" },
+                new SelectListItem { Value = "2", Text = "Обучается" },
+                new SelectListItem { Value = "3", Text = "Не обучается" },
+            };
+
+            ViewBag.UserStatuses = userStatuses;
+
             return View(payedUser);
         }
 
@@ -324,6 +363,8 @@ namespace IvritSchool.Controllers
         [HttpGet]
         public ActionResult AddPayedUser()
         {
+            SelectList tariffs = new SelectList(_tariffBLL.GetList(), "ID", "Name");
+            ViewBag.Tariffs = tariffs;
             return View();
         }
 

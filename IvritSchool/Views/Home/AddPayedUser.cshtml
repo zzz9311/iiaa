@@ -13,19 +13,27 @@
         <div class="form-group">
             <div class="mb-3">
                 <label for="formGroupExampleInput">Имя</label>
-                <input type="text" class="form-control" name="Name" placeholder="">
+                <input type="text" class="form-control" name="Name" placeholder="" required>
             </div>
         </div>
         <div class="form-group">
             <div class="mb-3">
                 <label for="formGroupExampleInput">Фамилия</label>
-                <input type="text" class="form-control" name="SureName" placeholder="">
+                <input type="text" class="form-control" name="SureName" placeholder="" required>
             </div>
         </div>
         <div class="form-group">
             <div class="mb-3">
                 <label for="formGroupExampleInput">Почта</label>
-                <input type="email" class="form-control" name="Email" placeholder="">
+                <input type="email" class="form-control" name="Email" placeholder="" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="mb-3">
+                <label for="formGroupExampleInput">Выберите тариф для пользователя</label>
+                <div>
+                    <select class="form-control" asp-for="@Model.Tariff" asp-items="ViewBag.Tariffs"></select>
+                </div>
             </div>
         </div>
     </div>

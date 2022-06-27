@@ -1,5 +1,6 @@
 ﻿using IvritSchool.Data;
 using IvritSchool.Finder;
+using IvritSchool.Helpers;
 using IvritSchool.Repository;
 using System;
 using System.Collections.Generic;
@@ -82,6 +83,14 @@ namespace IvritSchool.BLL.Days
         public Entities.Days FindByID(int dayID)
         {
             return _finder.Find(dayID);
+        }
+
+        public void Delete(int dayID)
+        {
+            var day = _finder.Find(dayID);
+            ThrowHelper.ThrowIfNull(day, "День равен нулю");
+            _repository.Delete(day);
+            _saveChangesCommand.SaveChanges();
         }
     }
 }

@@ -9,5 +9,6 @@ namespace IvritSchool.BLL.Messages
     {
         public void Insert(Entities.Message message);
         public void Update(Entities.Message message);
+        public void Delete(int id);
     }
 }

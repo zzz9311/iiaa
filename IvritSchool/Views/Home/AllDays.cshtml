@@ -4,7 +4,7 @@
 }
 <a href="@Url.Action("AddDay", "Home")">Добавить день</a>
 <br />
-<br/>
+<br />
 <h2>Все дни учебного плана(@Model.Count())</h2>
 
 <table class="table table-bordered">
@@ -12,18 +12,28 @@
         <tr>
             <th scope="col">Id</th>
             <th scope="col">Номер дня</th>
+            <th scope="col">Список сообщений</th>
             <th scope="col">Редактировать</th>
+            <th scope="col">Удалить день</th>
         </tr>
     </thead>
     <tbody>
 
         @foreach (var el in Model)
         {
-                <tr>
-                    <th scope="row">@el.ID</th>
-                    <td>@el.DayNumber</td>
-                    <td><a href="@Url.Action("EditDay", "home", new { dayID = @el.ID })">Редактировать</a></td>
-                </tr>            
+            <tr>
+                <th scope="row">@el.ID</th>
+                <td>@el.DayNumber</td>
+                <td><a href="@Url.Action("DaysMessages", "Home", new { dayID = el.ID })">Список сообщений</a></td>
+                <td><a href="@Url.Action("EditDay", "home", new { dayID = @el.ID })">Редактировать</a></td>
+                <td>
+                    <form asp-action="DeleteDay" asp-controller="home">
+                        <input type="hidden" value="@el.ID" name="dayID" />
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+
         }
     </tbody>
 </table>

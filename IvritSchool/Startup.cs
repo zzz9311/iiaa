@@ -2,6 +2,7 @@ using AspNetCore.Unobtrusive.Ajax;
 using IvritSchool.Data;
 using IvritSchool.Extensions;
 using IvritSchool.Finder;
+using IvritSchool.Middleware;
 using IvritSchool.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -66,6 +67,7 @@ namespace IvritSchool
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseUnobtrusiveAjax();
 

@@ -19,13 +19,16 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AllDays">Посмотреть все дни</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AllDays">Все дни</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AllTarifs">Посмотреть все тарифы</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AllTarifs">Все тарифы</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AllPayedUsers">Посмотреть всех оплаченных пользователей</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AllPayedUsers">Все оплаченные пользователи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="SendMessage">Рассылка</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -41,7 +44,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - IvritSchool - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year - IvritSchool
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

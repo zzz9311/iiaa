@@ -4,7 +4,7 @@
 
     string GetName(int messageType)
     {
-        switch(messageType)
+        switch (messageType)
         {
             case 1: return "Текcтовое сообщение";
             case 2: return "Аудио сообщение";
@@ -17,6 +17,11 @@
 }
 
 <h2>Все сообщения учебного дня(@Model.Count())</h2>
+<br />
+<br />
+<a href="@Url.Action("AddMessageToDay", "Home", new { dayID = ViewBag.DayId })">Добавить сообщение</a>
+<br />
+<br />
 
 <table class="table table-bordered">
     <thead>
@@ -25,18 +30,25 @@
             <th scope="col">VIP</th>
             <th scope="col">Тип сообщения</th>
             <th scope="col">Редактировать</th>
+            <th scope="col">Удалить</th>
         </tr>
     </thead>
     <tbody>
 
         @foreach (var el in Model)
         {
-        <tr>
-            <th scope="row">@el.ID</th>
-            <td>@(el.VIP == true ? "ДА":"НЕТ")</td>
-            <td>@GetName((int)el.Type)</td>
-            <td><a href="@Url.Action("EditMessage", "home", new { messageID = @el.ID })">Редактировать</a></td>
-        </tr>
+            <tr>
+                <th scope="row">@el.ID</th>
+                <td>@(el.VIP == true ? "ДА":"НЕТ")</td>
+                <td>@GetName((int)el.Type)</td>
+                <td><a href="@Url.Action("EditMessage", "home", new { messageID = @el.ID })">Редактировать</a></td>
+                <td>
+                    <form asp-action="DeleteMessage" asp-controller="home">
+                        <input type="hidden" value="@el.ID" name="messageID" />
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </form>
+                </td>
+            </tr>
 
         }
     </tbody>

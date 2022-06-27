@@ -10,5 +10,6 @@ namespace IvritSchool.BLL.Days
         public void Insert(Entities.Days day);
         public Entities.Days[] GetDays(string daysPredicate);
         public Entities.Days FindByID(int dayID);
+        public void Delete(int dayID);
     }
 }

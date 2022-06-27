@@ -14,19 +14,27 @@
         <div class="form-group">
             <div class="mb-3">
                 <label for="formGroupExampleInput">Имя</label>
-                <input type="text" class="form-control" value="@Model.Name" name="Name" placeholder="">
+                <input type="text" class="form-control" value="@Model.Name" name="Name" placeholder="" required>
             </div>
         </div>
         <div class="form-group">
             <div class="mb-3">
                 <label for="formGroupExampleInput">Фамилия</label>
-                <input type="text" class="form-control" value="@Model.SureName" name="SureName" placeholder="">
+                <input type="text" class="form-control" value="@Model.SureName" name="SureName" placeholder="" required>
             </div>
         </div>
         <div class="form-group">
             <div class="mb-3">
                 <label for="formGroupExampleInput">Почта</label>
-                <input type="email" class="form-control" value="@Model.Email" name="Email" placeholder="">
+                <input type="email" class="form-control" value="@Model.Email" name="Email" placeholder="" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="mb-3">
+                <label for="formGroupExampleInput">Выберите статус</label>
+                <div>
+                    <select class="form-control" asp-for="@Model.ClientStatus" asp-items="ViewBag.UserStatuses"></select>
+                </div>
             </div>
         </div>
     </div>

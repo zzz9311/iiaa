@@ -6,18 +6,15 @@
 
 <h2>Редактирования дня под номером № @Model.DayNumber</h2>
 <br />
-<a href="@Url.Action("AddMessageToDay", "Home", new { dayID = @Model.ID })">Добавить сообщение</a>
-<a href="@Url.Action("DaysMessages", "Home", new { dayID = @Model.ID })">Список сообщений</a>
-<br/>
-<br />
-<br />
+
+
 @using (Html.AjaxBeginForm("EditDay", new AjaxOptions { UpdateTargetId = "Result", HttpMethod = "POST" }))
 {
     <div class="form-horizontal">
         <div class="form-group">
             <div class="mb-3">
                 <label for="formGroupExampleInput">Номер дня</label>
-                <input type="text" class="form-control" value="@Model.DayNumber" name="DayNumber" placeholder="">
+                <input type="text" class="form-control" value="@Model.DayNumber" name="DayNumber" placeholder="" required>
             </div>
         </div>
     </div>
