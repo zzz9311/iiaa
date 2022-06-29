@@ -4,7 +4,7 @@
     ViewBag.Title = "EditUser";
 }
 
-<h2>Редактирование сообщения</h2>
+<h2>Добавление сообщения</h2>
 
 @using (Html.AjaxBeginForm("AddMessageToDay", new AjaxOptions { UpdateTargetId = "Result", HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
 {
@@ -43,6 +43,28 @@
                 <label for="formGroupExampleInput">
                     VIP
                     <input asp-for="@Model.VIP">
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="mb-3">
+                <label for="formGroupExampleInput">
+                    Введите ID пересылаемого сообщения
+                    <input asp-for="@Model.ForwardedMessage">
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="mb-3">
+                <label for="formGroupExampleInput">
+                    Введите ID группы пересылаемого сообщения
+                    <input asp-for="@Model.ForwardedGroup">
                 </label>
             </div>
         </div>

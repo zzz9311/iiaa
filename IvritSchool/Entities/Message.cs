@@ -11,5 +11,7 @@ namespace IvritSchool.Entities
         public string Path { get; set; }
         public bool VIP { get; set; }
         public Days Day { get; set; }
+        public int ForwardedMessage { get; set; }
+        public long ForwardedGroup { get; set; }
     }
 }
