@@ -48,7 +48,12 @@ namespace IvritSchool.BLL.SendersLogic
                     {
                         try
                         {
-                            await _sender.SendMessage(lesson, el.User.TID, el.Tariff, client);
+                            if (!el.Tariff.VIP && lesson.VIP)
+                            {
+                                continue;
+                            }
+
+                            await _sender.SendMessage(lesson, el.User.TID, client);
                         }
                         catch (System.Exception ex)
                         {

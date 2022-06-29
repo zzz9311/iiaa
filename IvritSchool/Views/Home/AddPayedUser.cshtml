@@ -32,7 +32,7 @@
             <div class="mb-3">
                 <label for="formGroupExampleInput">Выберите тариф для пользователя</label>
                 <div>
-                    <select class="form-control" asp-for="@Model.Tariff" asp-items="ViewBag.Tariffs"></select>
+                    <select class="form-control" name="TariffID" asp-items="ViewBag.Tariffs"></select>
                 </div>
             </div>
         </div>

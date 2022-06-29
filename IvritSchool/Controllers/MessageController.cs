@@ -1,27 +1,34 @@
-﻿using IvritSchool.BLL.Users;
-using IvritSchool.Commands;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using IvritSchool.BLL.Users;
+using IvritSchool.Commands;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using IvritSchool.StateMachine;
 
 namespace IvritSchool.Controllers
 {
-    public class MessageController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class MessageController : ControllerBase
     {
         private readonly IUserBLL _userBLL;
         private readonly IEnumerable<Command> _commands;
-        public MessageController(IUserBLL userBLL, 
-                                 IEnumerable<Command> commands)
+        private readonly IBotStateMachine _stateMachine;
+        public MessageController(IUserBLL userBLL,
+                                 IEnumerable<Command> commands,
+                                 IBotStateMachine stateMachine)
         {
             _userBLL = userBLL;
             _commands = commands;
+            _stateMachine = stateMachine;
         }
+
         [HttpPost]
-        [Route("message/update")]
-        public async Task<OkResult> Update([FromBody] Update update)
+        [Route("update")]
+        public async Task<OkResult> Update([FromForm] Update update)
         {
             TelegramBotClient botClient = await Bot.Bot.Get();
 
@@ -46,9 +53,19 @@ namespace IvritSchool.Controllers
                     }
                 }
 
+                var user = _userBLL.GetByTID(TId);
+
+                if(user == null)
+                {
+                    return Ok();
+                }
+
+                await _stateMachine.Execute(user, update.Message, botClient, TId);
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await botClient.SendTextMessageAsync(322044387, ex.ToString());
             }
 
             return Ok();

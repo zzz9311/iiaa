@@ -13,7 +13,7 @@ using Message = Telegram.Bot.Types.Message;
 
 namespace IvritSchool.StateMachine
 {
-    public class BotStateMachine
+    public class BotStateMachine : IBotStateMachine
     {
         private readonly IPayedUser _payedUserBLL;
         private readonly IUserBLL _userBLL;
@@ -37,7 +37,7 @@ namespace IvritSchool.StateMachine
 
                         var result = _payedUserBLL.SetUser(tid, email);
 
-                        if(result == SetPayedUserStatus.IsUsing)
+                        if (result == SetPayedUserStatus.IsUsing)
                         {
                             await client.SendTextMessageAsync(tid, "Почта занята");
                         }

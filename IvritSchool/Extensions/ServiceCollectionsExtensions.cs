@@ -9,6 +9,7 @@ using IvritSchool.Data;
 using IvritSchool.Finder;
 using IvritSchool.Repository;
 using IvritSchool.Senders;
+using IvritSchool.StateMachine;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -29,6 +30,7 @@ namespace IvritSchool.Extensions
             services.AddScoped<ISender, Sender>();
             services.AddScoped<ILessonSenderBLL, LessonSenderBLL>();
             services.AddScoped<IPayedUser, PayedUser>();
+            services.AddScoped<IBotStateMachine, BotStateMachine>();
 
             return services;
         }

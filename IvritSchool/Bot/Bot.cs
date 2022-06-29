@@ -20,9 +20,9 @@ namespace IvritSchool.Bot
             }
 
             client = new TelegramBotClient(AppSettings.Key);
-
-            string url = string.Format(AppSettings.Url, "message/update");
-            //await client.SetWebhookAsync(url);
+            
+            string url = string.Format(AppSettings.Url, "api/message/update");
+            await client.SetWebhookAsync(url);
             return client;
         }
     }

@@ -12,13 +12,8 @@ namespace IvritSchool.Senders
 {
     public class Sender : ISender
     {
-        public async Task SendMessage(Message message, long tid, Tariff userTariff, TelegramBotClient client)
+        public async Task SendMessage(Message message, long tid, TelegramBotClient client)
         {
-            if (message.VIP && !userTariff.VIP)
-            {
-                return;
-            }
-
             var messageType = GetMessageType(message.Type);
             await messageType.SendAsync(message, client, tid);
         }

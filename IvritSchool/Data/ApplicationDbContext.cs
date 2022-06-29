@@ -12,8 +12,8 @@ namespace IvritSchool.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
         }
+
         public DbSet<BotUser> BotUsers { get; set; }
         public DbSet<Days> Days { get; set; }
         public DbSet<Message> Messages { get; set; }

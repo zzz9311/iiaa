@@ -369,8 +369,9 @@ namespace IvritSchool.Controllers
         }
 
         [HttpPost]
-        public string AddPayedUser(Entities.PayedUsers payedUser)
+        public string AddPayedUser(Entities.PayedUsers payedUser, int tariffID)
         {
+            payedUser.Tariff = _tariffBLL.Get(tariffID);
             _payedUserBLL.Add(payedUser);
             return BuildResultString((true, "Пользователь был добавлен"));
         }

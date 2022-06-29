@@ -1,24 +1,15 @@
 using AspNetCore.Unobtrusive.Ajax;
 using IvritSchool.Data;
 using IvritSchool.Extensions;
-using IvritSchool.Finder;
 using IvritSchool.Middleware;
-using IvritSchool.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+using Newtonsoft.Json;
 namespace IvritSchool
 {
     public class Startup
@@ -48,7 +39,7 @@ namespace IvritSchool
 
             services.AddDAL();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,7 +64,7 @@ namespace IvritSchool
 
             app.UseRouting();
 
-            //Bot.Bot.Get().Wait();//start the bot
+            Bot.Bot.Get().Wait();//start the bot
 
             app.UseAuthentication();
             app.UseAuthorization();

@@ -6,6 +6,6 @@ namespace IvritSchool.Senders
 {
     public interface ISender
     {
-        Task SendMessage(Message message, long tid, Tariff userTariff, TelegramBotClient client);
+        Task SendMessage(Message message, long tid, TelegramBotClient client);
     }
 }
