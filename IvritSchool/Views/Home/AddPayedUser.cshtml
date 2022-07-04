@@ -9,34 +9,42 @@
 
 @using (Html.AjaxBeginForm("AddPayedUser", new AjaxOptions { UpdateTargetId = "Result", HttpMethod = "POST" }))
 {
-    <div class="form-horizontal">
-        <div class="form-group">
-            <div class="mb-3">
-                <label for="formGroupExampleInput">Имя</label>
-                <input type="text" class="form-control" name="Name" placeholder="" required>
-            </div>
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="mb-3">
+            <label for="formGroupExampleInput">Имя</label>
+            <input type="text" class="form-control" name="Name" placeholder="" required>
         </div>
-        <div class="form-group">
-            <div class="mb-3">
-                <label for="formGroupExampleInput">Фамилия</label>
-                <input type="text" class="form-control" name="SureName" placeholder="" required>
-            </div>
+    </div>
+    <div class="form-group">
+        <div class="mb-3">
+            <label for="formGroupExampleInput">Фамилия</label>
+            <input type="text" class="form-control" name="SureName" placeholder="" required>
         </div>
-        <div class="form-group">
-            <div class="mb-3">
-                <label for="formGroupExampleInput">Почта</label>
-                <input type="email" class="form-control" name="Email" placeholder="" required>
-            </div>
+    </div>
+    <div class="form-group">
+        <div class="mb-3">
+            <label for="formGroupExampleInput">Почта</label>
+            <input type="email" class="form-control" name="Email" placeholder="" required>
         </div>
-        <div class="form-group">
-            <div class="mb-3">
-                <label for="formGroupExampleInput">Выберите тариф для пользователя</label>
-                <div>
-                    <select class="form-control" name="TariffID" asp-items="ViewBag.Tariffs"></select>
-                </div>
+    </div>
+    <div class="form-group">
+        <div class="mb-3">
+            <label for="formGroupExampleInput">Начало учебы</label>
+            <div>
+                <input type="datetime" class="form-control" name="StartFrom">
             </div>
         </div>
     </div>
+    <div class="form-group">
+        <div class="mb-3">
+            <label for="formGroupExampleInput">Выберите тариф для пользователя</label>
+            <div>
+                <select class="form-control" name="TariffID" asp-items="ViewBag.Tariffs"></select>
+            </div>
+        </div>
+    </div>
+</div>
     <input type="submit" class="btn btn-primary" value="Добавить" />
 }
 <div>

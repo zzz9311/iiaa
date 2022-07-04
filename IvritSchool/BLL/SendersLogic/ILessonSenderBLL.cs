@@ -4,6 +4,9 @@ namespace IvritSchool.BLL.SendersLogic
 {
     public interface ILessonSenderBLL
     {
-        public Task SendAsync();
+        Task SendAsync();
+        Task SendAsync(Entities.Message message);
+        void AddLessonsToSend();
+        void DeleteAllSentMessages();
     }
 }

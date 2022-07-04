@@ -36,7 +36,7 @@
             <div class="mb-3">
                 <label for="formGroupExampleInput">
                     Введите ID пересылаемого сообщения
-                    <input asp-for="@Model.ForwardedMessage">
+                    <input class="form-control" asp-for="@Model.ForwardedMessage">
                 </label>
             </div>
         </div>
@@ -47,7 +47,18 @@
             <div class="mb-3">
                 <label for="formGroupExampleInput">
                     Введите ID группы пересылаемого сообщения
-                    <input asp-for="@Model.ForwardedGroup">
+                    <input class="form-control" asp-for="@Model.ForwardedGroup">
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="mb-3">
+                <label for="formGroupExampleInput">
+                    Время отправки сообщения
+                    <input class="form-control" asp-for="@Model.SendTime">
                 </label>
             </div>
         </div>

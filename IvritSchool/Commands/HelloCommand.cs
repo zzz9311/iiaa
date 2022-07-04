@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace IvritSchool.Commands
 {
@@ -35,7 +36,14 @@ namespace IvritSchool.Commands
                 _userBLL.Add(user);
             }
 
-            await client.SendTextMessageAsync(user.TID, "Приветственное сообщение");
+            var inlineSelect = new InlineKeyboardMarkup(new[]
+            {
+                                            new[]
+                                            {
+                                                InlineKeyboardButton.WithCallbackData("Найти оплату","Найти оплату"),
+                                            }
+            });
+            await client.SendTextMessageAsync(user.TID, "Приветственное сообщение",replyMarkup: inlineSelect);
         }
     }
 }

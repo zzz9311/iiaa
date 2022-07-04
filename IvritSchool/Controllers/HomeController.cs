@@ -34,9 +34,9 @@ namespace IvritSchool.Controllers
         private readonly ITariffBLL _tariffBLL;
         private readonly IMessageBLL _messageBLL;
         private readonly IWebHostEnvironment _appEnvironment;
-        private readonly ISender _sender;
-        private readonly ILessonSenderBLL lessonSenderBLL;
+        private readonly ILessonSenderBLL _lessonSenderBLL;
         private readonly IPayedUser _payedUserBLL;
+
         public HomeController(IRepository<BotUser> userRepository,
                               IUserBLL userBLL,
                               IDayBLL dayBLL,
@@ -47,7 +47,6 @@ namespace IvritSchool.Controllers
                               IRepository<Entities.Message> messageRepository,
                               IWebHostEnvironment appEnvironment,
                               IRepository<PayedUsers> payedUsersRepository,
-                              ISender sender,
                               ILessonSenderBLL lessonSenderBLL, 
                               IPayedUser payedUserBLL)
         {
@@ -61,8 +60,7 @@ namespace IvritSchool.Controllers
             _messageRepository = messageRepository;
             _appEnvironment = appEnvironment;
             _payedUsersRepository = payedUsersRepository;
-            _sender = sender;
-            this.lessonSenderBLL = lessonSenderBLL;
+            _lessonSenderBLL = lessonSenderBLL;
             _payedUserBLL = payedUserBLL;
         }
         private string BuildResultString((bool, string) tuple)
@@ -203,8 +201,15 @@ namespace IvritSchool.Controllers
         [HttpPost]
         public ActionResult DeleteTariff(int tariffId)
         {
-            _tariffBLL.DeleteTariff(tariffId);
-            return RedirectToAction("AllTarifs");
+            try
+            {
+                _tariffBLL.DeleteTariff(tariffId);
+                return RedirectToAction("AllTarifs");
+            }
+            catch (Exception)
+            {
+                return Ok("Не удалось удалить тариф, есть пользователи, которые используют его");
+            }
         }
         #endregion
 
@@ -219,16 +224,7 @@ namespace IvritSchool.Controllers
                 return NotFound();
             }
 
-
-
-            List<SelectListItem> messageTypes = new()
-            {
-                new SelectListItem { Value = "1", Text = "Текстовое" },
-                new SelectListItem { Value = "2", Text = "Аудио" },
-                new SelectListItem { Value = "3", Text = "Файл" },
-                new SelectListItem { Value = "4", Text = "Видео" },
-                new SelectListItem { Value = "5", Text = "Фото" },
-            };
+            List<SelectListItem> messageTypes = GetMessageTypes();
 
             ViewBag.MessageTypes = messageTypes;
 
@@ -310,7 +306,28 @@ namespace IvritSchool.Controllers
         [AllowAnonymous]
         public async Task SendLessons()
         {
-            await lessonSenderBLL.SendAsync();
+            await _lessonSenderBLL.SendAsync();
+        }
+
+        public ActionResult SendMessage()
+        {
+            List<SelectListItem> messageTypes = GetMessageTypes();
+
+            ViewBag.MessageTypes = messageTypes;
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<string> SendMessage(Message message, IFormFile uploadedFile)
+        {
+            if (uploadedFile != null) //TODO dry
+            {
+                message.Path = await AddFileAsync(uploadedFile);
+            }
+
+            await _lessonSenderBLL.SendAsync(message);
+            return BuildResultString((true, "Сообщения были отправлены"));
         }
         #endregion
 
@@ -372,8 +389,25 @@ namespace IvritSchool.Controllers
         public string AddPayedUser(Entities.PayedUsers payedUser, int tariffID)
         {
             payedUser.Tariff = _tariffBLL.Get(tariffID);
-            _payedUserBLL.Add(payedUser);
+            _payedUserBLL.Add(payedUser,tariffID);
             return BuildResultString((true, "Пользователь был добавлен"));
+        }
+        #endregion
+
+        #region helpers...
+
+        [NonAction]
+        public List<SelectListItem> GetMessageTypes()
+        {
+            return new List<SelectListItem>
+            {
+                new SelectListItem { Value = "1", Text = "Текстовое" },
+                new SelectListItem { Value = "2", Text = "Аудио" },
+                new SelectListItem { Value = "3", Text = "Файл" },
+                new SelectListItem { Value = "4", Text = "Видео" },
+                new SelectListItem { Value = "5", Text = "Фото" },
+                new SelectListItem { Value = "6", Text = "Переслать сообщение" }
+            };
         }
         #endregion
     }

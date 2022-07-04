@@ -11,7 +11,7 @@ namespace IvritSchool.Senders.MessageTypes
     {
         public async Task SendAsync(Message message, TelegramBotClient client, long tid)
         {
-            await client.SendAudioAsync(tid, $"{Bot.AppSettings.baseUrl}/{message.Path}", protectContent:true);
+            await client.SendAudioAsync(tid, $"{Bot.AppSettings.baseUrl}/{message.Path}", protectContent:true, caption: message.Text);
         }
     }
 }

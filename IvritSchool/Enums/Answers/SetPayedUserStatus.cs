@@ -8,6 +8,7 @@ namespace IvritSchool.Enums.Answers
     public enum SetPayedUserStatus
     {
         OK = 0,
-        IsUsing = 1
+        IsUsing = 1,
+        NotFound = 2
     }
 }

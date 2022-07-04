@@ -14,22 +14,35 @@ namespace IvritSchool.BLL.PayedUsers
     public class PayedUser : IPayedUser
     {
         private readonly IRepository<Entities.PayedUsers> _repository;
+        private readonly IRepository<Entities.Tariff> _tariffRepository;
         private readonly IFinder<Entities.PayedUsers> _finder;
         private readonly ISaveChangesCommand _saveChangesCommand;
         private readonly IUserBLL _userBLL;
         public PayedUser(IRepository<Entities.PayedUsers> repository,
                          IFinder<Entities.PayedUsers> finder,
-                         ISaveChangesCommand saveChangesCommand, 
-                         IUserBLL userBLL)
+                         ISaveChangesCommand saveChangesCommand,
+                         IUserBLL userBLL, 
+                         IRepository<Entities.Tariff> tariffRepository)
         {
             _repository = repository;
             _finder = finder;
             _saveChangesCommand = saveChangesCommand;
             _userBLL = userBLL;
+            _tariffRepository = tariffRepository;
         }
 
-        public void Add(Entities.PayedUsers payedUser)
+        public void Add(Entities.PayedUsers payedUser, int? tariffID = null)
         {
+            if(tariffID.HasValue)
+            {
+                var tariff = _tariffRepository.Include(x => x.Days).Find(x => x.ID == tariffID);
+                ThrowHelper.ThrowIfNull(tariff, "Tariff was null");
+                if(tariff.Days.Count() > 0)
+                {
+                    payedUser.CurrentDay = tariff.Days.ElementAt(0);
+                }
+            }
+
             _repository.Insert(payedUser);
             payedUser.ClientStatus = Enums.ClientStatus.NotStuding;
             _saveChangesCommand.SaveChanges();
@@ -49,6 +62,7 @@ namespace IvritSchool.BLL.PayedUsers
             oldPayedUser.Name = payedUser.Name;
             oldPayedUser.SureName = payedUser.SureName;
             oldPayedUser.Tariff = payedUser.Tariff;
+            oldPayedUser.StartFrom = payedUser.StartFrom;
 
             _saveChangesCommand.SaveChanges();
         }
@@ -64,7 +78,11 @@ namespace IvritSchool.BLL.PayedUsers
             ThrowHelper.ThrowIfNull(user, $"user {tid}");
 
             var payedUser = FindByEmail(email);
-            ThrowHelper.ThrowIfNull(payedUser, $"payedUser");
+            if (payedUser == null)
+            {
+                return SetPayedUserStatus.IsUsing;
+            }
+            
 
             if (payedUser.ClientStatus != Enums.ClientStatus.NotStuding)
             {
@@ -79,6 +97,24 @@ namespace IvritSchool.BLL.PayedUsers
             _saveChangesCommand.SaveChanges();
 
             return SetPayedUserStatus.OK;
+        }
+
+        public void RecalculateNextMessage(int[] userIDs)
+        {
+            var payedUsers = _repository.Include(x => x.User).ToArray(x => userIDs.Contains(x.ID));
+
+            foreach(var el in payedUsers)
+            {
+                if (el.NextDay == null)
+                {
+                    el.ClientStatus = Enums.ClientStatus.Ended;
+                    continue;
+                }
+
+                el.CurrentDay = el.NextDay;
+            }
+
+            _saveChangesCommand.SaveChanges();
         }
     }
 }

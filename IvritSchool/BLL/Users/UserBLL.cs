@@ -62,5 +62,10 @@ namespace IvritSchool.BLL.Users
                 _saveChangesCommand.SaveChanges();
             }
         }
+
+        public BotUser[] GetList()
+        {
+            return _repository.ToArray();
+        }
     }
 }

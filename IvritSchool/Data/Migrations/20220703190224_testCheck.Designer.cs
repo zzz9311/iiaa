@@ -4,14 +4,16 @@ using IvritSchool.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IvritSchool.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220703190224_testCheck")]
+    partial class testCheck
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,11 +94,14 @@ namespace IvritSchool.Data.Migrations
                     b.Property<int>("ForwardedMessage")
                         .HasColumnType("int");
 
+                    b.Property<int?>("MessagesToSendID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Path")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("SendTime")
-                        .HasColumnType("datetime2");
+                    b.Property<bool>("Sent")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
@@ -111,6 +116,8 @@ namespace IvritSchool.Data.Migrations
 
                     b.HasIndex("DayID");
 
+                    b.HasIndex("MessagesToSendID");
+
                     b.ToTable("Messages");
                 });
 
@@ -121,24 +128,10 @@ namespace IvritSchool.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Error")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("MessagesID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("SendTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Sent")
-                        .HasColumnType("bit");
-
                     b.Property<int?>("UserID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("MessagesID");
 
                     b.HasIndex("UserID");
 
@@ -437,20 +430,18 @@ namespace IvritSchool.Data.Migrations
                         .WithMany("Messages")
                         .HasForeignKey("DayID");
 
+                    b.HasOne("IvritSchool.Entities.MessagesToSend", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("MessagesToSendID");
+
                     b.Navigation("Day");
                 });
 
             modelBuilder.Entity("IvritSchool.Entities.MessagesToSend", b =>
                 {
-                    b.HasOne("IvritSchool.Entities.Message", "Messages")
-                        .WithMany()
-                        .HasForeignKey("MessagesID");
-
                     b.HasOne("IvritSchool.Entities.BotUser", "User")
                         .WithMany()
                         .HasForeignKey("UserID");
-
-                    b.Navigation("Messages");
 
                     b.Navigation("User");
                 });
@@ -534,6 +525,11 @@ namespace IvritSchool.Data.Migrations
                 });
 
             modelBuilder.Entity("IvritSchool.Entities.Days", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("IvritSchool.Entities.MessagesToSend", b =>
                 {
                     b.Navigation("Messages");
                 });

@@ -11,5 +11,6 @@ namespace IvritSchool.BLL.Users
         BotUser GetByID(int id);
         BotUser GetByTID(long tid);
         void SetStaus(long tid, UserStatus status);
+        BotUser[] GetList();
     }
 }

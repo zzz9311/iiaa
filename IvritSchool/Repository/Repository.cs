@@ -19,6 +19,10 @@ namespace IvritSchool.Repository
         {
             _set.Add(entity);
         }
+        public void Insert(TEntity[] entities)
+        {
+            _set.AddRange(entities);
+        }
 
         public void Delete(TEntity entity)
         {

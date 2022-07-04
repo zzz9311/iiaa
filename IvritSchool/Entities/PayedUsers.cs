@@ -15,8 +15,9 @@ namespace IvritSchool.Entities
         public ClientStatus ClientStatus { get; set; }
         public DateTime? LearnStartsFrom { get; set; }
         public BotUser User { get; set; }
+        public DateTime StartFrom { get; set; }
 
         public Days CurrentDay { get; set; }
-
+        public Days NextDay { get; set; }
     }
 }

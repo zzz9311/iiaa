@@ -41,6 +41,10 @@ namespace IvritSchool.StateMachine
                         {
                             await client.SendTextMessageAsync(tid, "Почта занята");
                         }
+                        else if(result == SetPayedUserStatus.NotFound)
+                        {
+                            await client.SendTextMessageAsync(tid, "Почта не найдена");
+                        }
                         else
                         {
                             await client.SendTextMessageAsync(tid, "Почта найдена");

@@ -6,7 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using IvritSchool.Entities;
+using IvritSchool.Enums;
 namespace IvritSchool.BLL.Days
 {
     public class DayBLL : IDayBLL
@@ -92,5 +93,6 @@ namespace IvritSchool.BLL.Days
             _repository.Delete(day);
             _saveChangesCommand.SaveChanges();
         }
+
     }
 }

@@ -28,7 +28,7 @@ namespace IvritSchool.Controllers
 
         [HttpPost]
         [Route("update")]
-        public async Task<OkResult> Update([FromForm] Update update)
+        public async Task<OkResult> Update([FromBody] Update update)
         {
             TelegramBotClient botClient = await Bot.Bot.Get();
 

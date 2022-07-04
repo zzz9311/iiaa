@@ -11,6 +11,7 @@ namespace IvritSchool.Enums
         Audio = 2, 
         File = 3,
         Video = 4,
-        Photo = 5
+        Photo = 5,
+        Forward = 6
     }
 }

@@ -1,89 +1,98 @@
-﻿using IvritSchool.Data;
+﻿using IvritSchool.BLL.Users;
+using IvritSchool.Data;
 using IvritSchool.Repository;
 using IvritSchool.Senders;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
+using IvritSchool.Entities;
+using IvritSchool.BLL.Messages;
+using IvritSchool.BLL.PayedUsers;
 
 namespace IvritSchool.BLL.SendersLogic
 {
     public class LessonSenderBLL : ILessonSenderBLL
     {
         private readonly IRepository<Entities.PayedUsers> _payedUsersRepository;
+        private readonly IPayedUser _payedUserBLL;
         private readonly ISender _sender;
         private readonly ISaveChangesCommand _saveChangesCommand;
-        private readonly IRepository<Entities.Days> _daysRepository;
+        private readonly IUserBLL _userBLL;
+        private readonly IRepository<MessagesToSend> _messageToSendRepository;
+        private readonly IMessageBLL _messageBLL;
         public LessonSenderBLL(IRepository<Entities.PayedUsers> payedUsersRepository,
                                ISender sender,
-                               ISaveChangesCommand saveChangesCommand, 
-                               IRepository<Entities.Days> daysRepository)
+                               ISaveChangesCommand saveChangesCommand,
+                               IUserBLL userBLL,
+                               IRepository<MessagesToSend> messageToSendRepository,
+                               IMessageBLL messageBLL, 
+                               IPayedUser payedUserBLL)
         {
             _payedUsersRepository = payedUsersRepository;
             _sender = sender;
             _saveChangesCommand = saveChangesCommand;
-            _daysRepository = daysRepository;
+            _userBLL = userBLL;
+            _messageToSendRepository = messageToSendRepository;
+            _messageBLL = messageBLL;
+            _payedUserBLL = payedUserBLL;
+        }
+
+
+        public async Task SendAsync(Message message)
+        {
+            var client = await Bot.Bot.Get();
+            var users = _userBLL.GetList();
+            foreach (var el in users)
+            {
+                await _sender.SendMessage(message, el.TID, client);
+            }
         }
 
         public async Task SendAsync()
         {
-            var days = _daysRepository.Include(x => x.Messages).ToArray();
-            var payedUsers = _payedUsersRepository.Include(x => x.User)
-                                                  .Include(x => x.Tariff)
-                                                  .Include(x => x.Tariff.Days)
-                                                  .Include(x => x.CurrentDay)
-                                                  .ToArray(x => x.ClientStatus == Enums.ClientStatus.Studing);
+            var messages = _messageToSendRepository.Include(x => x.User).ToArray(x => !x.Error && !x.Sent && x.SendTime.Hour < DateTime.Now.Hour);
             var client = await Bot.Bot.Get();
 
-            foreach (var el in payedUsers)
+            foreach (var el in messages)
             {
                 try
                 {
-                    var dayToSend = days.Where(i => i.DayNumber == el.CurrentDay.DayNumber).FirstOrDefault();
-
-                    if (dayToSend == null)
-                    {
-                        continue;
-                    }
-
-                    foreach (var lesson in dayToSend.Messages)
-                    {
-                        try
-                        {
-                            if (!el.Tariff.VIP && lesson.VIP)
-                            {
-                                continue;
-                            }
-
-                            await _sender.SendMessage(lesson, el.User.TID, client);
-                        }
-                        catch (System.Exception ex)
-                        {
-                        }
-                    }
-
-                    var dayIndex = el.Tariff.Days.ToList().FindIndex(a => a == dayToSend);
-
-                    if (dayIndex != -1)
-                    {
-                        if (dayIndex == el.Tariff.Days.Count() - 1)
-                        {
-                            el.ClientStatus = Enums.ClientStatus.Ended;
-                            continue;
-                        }
-
-                        var nextDay = el.Tariff.Days.ToArray()[dayIndex + 1];
-                        if (nextDay != null)
-                        {
-                            el.CurrentDay = nextDay;
-                        }
-                    }
+                    await _sender.SendMessage(el.Messages, el.User.TID, client);
                 }
-                catch (System.Exception)
+                catch (Exception)
                 {
-
+                    el.Error = true;
+                }
+                finally
+                {
+                    el.Sent = true;
                 }
             }
 
             _saveChangesCommand.SaveChanges();
+        }
+
+        public void AddLessonsToSend()
+        {
+            var message = _messageBLL.GetActuallyMessages();
+
+            foreach (var el in message)
+            {
+                _messageToSendRepository.Insert(el);
+            }
+
+            _saveChangesCommand.SaveChanges();
+        }
+
+        public void DeleteAllSentMessages()
+        {
+            var sentMessages = _messageToSendRepository.Include(x => x.User).ToArray();
+
+            var grouped = sentMessages.GroupBy(x => x.Error);
+            var failedUsers = grouped.Where(x => x.Key == true).SelectMany(x => x).Select(x => x.User.ID).ToArray();
+            var successUsers = sentMessages.Select(x => x.User.ID).Distinct().Except(failedUsers).ToArray();
+
+            _payedUserBLL.RecalculateNextMessage(successUsers);
         }
     }
 }

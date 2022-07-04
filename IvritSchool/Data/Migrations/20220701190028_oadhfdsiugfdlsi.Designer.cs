@@ -4,14 +4,16 @@ using IvritSchool.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IvritSchool.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220701190028_oadhfdsiugfdlsi")]
+    partial class oadhfdsiugfdlsi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,9 +97,6 @@ namespace IvritSchool.Data.Migrations
                     b.Property<string>("Path")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("SendTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
@@ -112,37 +111,6 @@ namespace IvritSchool.Data.Migrations
                     b.HasIndex("DayID");
 
                     b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("IvritSchool.Entities.MessagesToSend", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Error")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("MessagesID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("SendTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Sent")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("MessagesID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("MessagesToSend");
                 });
 
             modelBuilder.Entity("IvritSchool.Entities.PayedUsers", b =>
@@ -167,9 +135,6 @@ namespace IvritSchool.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("NextDayID")
-                        .HasColumnType("int");
-
                     b.Property<int>("PasswordType")
                         .HasColumnType("int");
 
@@ -188,8 +153,6 @@ namespace IvritSchool.Data.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("CurrentDayID");
-
-                    b.HasIndex("NextDayID");
 
                     b.HasIndex("TariffID");
 
@@ -440,30 +403,11 @@ namespace IvritSchool.Data.Migrations
                     b.Navigation("Day");
                 });
 
-            modelBuilder.Entity("IvritSchool.Entities.MessagesToSend", b =>
-                {
-                    b.HasOne("IvritSchool.Entities.Message", "Messages")
-                        .WithMany()
-                        .HasForeignKey("MessagesID");
-
-                    b.HasOne("IvritSchool.Entities.BotUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
-
-                    b.Navigation("Messages");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("IvritSchool.Entities.PayedUsers", b =>
                 {
                     b.HasOne("IvritSchool.Entities.Days", "CurrentDay")
                         .WithMany()
                         .HasForeignKey("CurrentDayID");
-
-                    b.HasOne("IvritSchool.Entities.Days", "NextDay")
-                        .WithMany()
-                        .HasForeignKey("NextDayID");
 
                     b.HasOne("IvritSchool.Entities.Tariff", "Tariff")
                         .WithMany()
@@ -474,8 +418,6 @@ namespace IvritSchool.Data.Migrations
                         .HasForeignKey("UserID");
 
                     b.Navigation("CurrentDay");
-
-                    b.Navigation("NextDay");
 
                     b.Navigation("Tariff");
 

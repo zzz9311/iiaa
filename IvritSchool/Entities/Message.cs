@@ -1,4 +1,5 @@
 ﻿using IvritSchool.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace IvritSchool.Entities
@@ -13,5 +14,6 @@ namespace IvritSchool.Entities
         public Days Day { get; set; }
         public int ForwardedMessage { get; set; }
         public long ForwardedGroup { get; set; }
+        public DateTime SendTime { get; set; }
     }
 }

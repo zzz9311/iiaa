@@ -30,11 +30,5 @@ namespace IvritSchool.Repository
             _query = _query.Include(includeProperty);
             return (TType)this;
         }
-
-        public TType Incalude<TProperty>(Expression<Func<TEntity, TProperty[]>> includeProperty)
-        {
-            _query = _query.Include(includeProperty);
-            return (TType)this;
-        }
     }
 }

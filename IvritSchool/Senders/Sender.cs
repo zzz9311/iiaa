@@ -38,6 +38,10 @@ namespace IvritSchool.Senders
                     {
                         return new PhotoMessage();
                     }
+                case MessageType.Forward:
+                    {
+                        return new ForwardMessageType();
+                    }
             }
             throw new ArgumentNullException("Sender = null");
         }
